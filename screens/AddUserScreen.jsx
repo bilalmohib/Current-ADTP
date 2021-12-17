@@ -202,14 +202,14 @@ function AddUserScreen() {
 const styles = StyleSheet.create({
   IconContainer: {
     width: "10%",
-    borderWidth: 1,
+    //borderWidth: 1,
     alignItems: "center"
   },
   container_button: {
     marginTop: 20,
     borderColor: "rgba(0, 0, 0, 0.12)",
     justifyContent: "flex-start",
-    borderWidth: 1,
+    //borderWidth: 1,
     height: 50,
     width: "100%",
     backgroundColor: "rgba(255, 255, 255, 0.87)",
