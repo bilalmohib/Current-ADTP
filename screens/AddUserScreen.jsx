@@ -174,8 +174,10 @@ function AddUserScreen() {
           style={styles.container_button}
           onPress={() => alert('Save Button Pressed')}
         >
-          <Entypo name="save" size={23} style={{ marginLeft: 12, marginTop: 12 }} color="#60AD7F" />
-          <Text style={styles.save_button_txt}>SAVE</Text>
+          <View style={styles.IconContainer}>
+            <Entypo name="save" size={23} style={{ lineHeight: 40 }} color="#60AD7F" />
+          </View>
+          <Text style={styles._button_txt}>SAVE</Text>
         </TouchableOpacity>
         {/* Save Button Container */}
 
@@ -184,8 +186,10 @@ function AddUserScreen() {
           style={styles.container_button}
           onPress={() => alert('Delete Button Pressed')}
         >
-          <AntDesign name="delete" size={23} style={{ marginLeft: 12, marginTop: 12 }} color="#000000" />
-          <Text style={styles.delete_button_txt}>DELETE</Text>
+          <View style={styles.IconContainer}>
+            <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#000000" />
+          </View>
+          <Text style={styles._button_txt}>DELETE</Text>
         </TouchableOpacity>
         {/* Delete Button Container */}
       </View>
@@ -196,6 +200,11 @@ function AddUserScreen() {
 }
 
 const styles = StyleSheet.create({
+  IconContainer: {
+    width: "10%",
+    borderWidth: 1,
+    alignItems: "center"
+  },
   container_button: {
     marginTop: 20,
     borderColor: "rgba(0, 0, 0, 0.12)",
@@ -208,23 +217,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row"
   },
-  save_button_txt: {
+  _button_txt: {
     fontSize: 14,
     color: "#60AD7F",
-    width: "85%",
-    // borderWidth:1,
+    width: "90%",
+    borderWidth:1,
     alignItems: "center",
     textAlign: "center",
-    paddingTop: 15
-  },
-  delete_button_txt: {
-    fontSize: 14,
-    color: "#979797",
-    width: "85%",
-    // borderWidth:1,
-    alignItems: "center",
-    textAlign: "center",
-    paddingTop: 15
+    lineHeight:40
   },
   buttons_main_container: {
     paddingTop: 0
