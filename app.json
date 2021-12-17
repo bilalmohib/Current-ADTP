@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "ADTP3",
+    "slug": "ADTP3",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "ADTP3"
+}
