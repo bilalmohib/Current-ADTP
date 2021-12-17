@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#60AD7F",
     width: "90%",
-    borderWidth:1,
+    // borderWidth:1,
     alignItems: "center",
     textAlign: "center",
     lineHeight:40
