@@ -177,7 +177,7 @@ function AddUserScreen() {
           <View style={styles.IconContainer}>
             <Entypo name="save" size={23} style={{ lineHeight: 40 }} color="#60AD7F" />
           </View>
-          <Text style={styles._button_txt}>SAVE</Text>
+          <Text style={styles.save_button_txt}>SAVE</Text>
         </TouchableOpacity>
         {/* Save Button Container */}
 
@@ -189,7 +189,7 @@ function AddUserScreen() {
           <View style={styles.IconContainer}>
             <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#000000" />
           </View>
-          <Text style={styles._button_txt}>DELETE</Text>
+          <Text style={styles.delete_button_txt}>DELETE</Text>
         </TouchableOpacity>
         {/* Delete Button Container */}
       </View>
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderColor: "rgba(0, 0, 0, 0.12)",
     justifyContent: "flex-start",
-    //borderWidth: 1,
+    borderWidth: 1,
     height: 50,
     width: "100%",
     backgroundColor: "rgba(255, 255, 255, 0.87)",
@@ -217,11 +217,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row"
   },
-  _button_txt: {
+  delete_button_txt: {
+    fontSize: 14,
+    color: "#000000",
+    width: "90%",
+    //borderWidth:1,
+    alignItems: "center",
+    textAlign: "center",
+    lineHeight:40
+  },
+  save_button_txt: {
     fontSize: 14,
     color: "#60AD7F",
     width: "90%",
-    // borderWidth:1,
+    //borderWidth:1,
     alignItems: "center",
     textAlign: "center",
     lineHeight:40
