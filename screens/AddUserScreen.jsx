@@ -74,7 +74,11 @@ function AddUserScreen() {
         </View>
       )
     }
-    console.log("The Picked item is ==> ", picked);
+    for (let i = 0; i < picker_Items.length; i++) {
+      if (picker_Items[i].value == picked) {
+        console.log("The Picked item label is ==> ", picker_Items[i].label);
+      }  
+    }
   })
 
   const storeUser = () => {
@@ -117,7 +121,7 @@ function AddUserScreen() {
               }>
               {picker_Items.map((v, i) => {
                 return (
-                    <Picker.Item key={i} label={v.label} value={v.value} />
+                  <Picker.Item key={i} label={v.label} value={v.value} />
                 )
               })}
             </Picker>
@@ -135,7 +139,7 @@ function AddUserScreen() {
               }>
               {picker_Items.map((v, i) => {
                 return (
-                    <Picker.Item key={i} label={v.label} value={v.value} />
+                  <Picker.Item key={i} label={v.label} value={v.value} />
                 )
               })}
             </Picker>
