@@ -12,6 +12,49 @@ import * as Device from 'expo-device';
 
 import firebase from '../database/firebaseDb';
 
+let picker_Items = [
+  {
+    label: "Company 1",
+    value: 1
+  },
+  {
+    label: "Company 2",
+    value: 2
+  },
+  {
+    label: "Company 3",
+    value: 3
+  },
+  {
+    label: "Company 4",
+    value: 4
+  },
+  {
+    label: "Company 5",
+    value: 5
+  },
+  {
+    label: "Company 6",
+    value: 6
+  },
+  {
+    label: "Company 7",
+    value: 7
+  },
+  {
+    label: "Company 8",
+    value: 8
+  },
+  {
+    label: "Company 9",
+    value: 9
+  },
+  {
+    label: "Company 10",
+    value: 10
+  }
+]
+
 function AddUserScreen() {
 
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +64,7 @@ function AddUserScreen() {
   const [agency, setAgency] = useState('');
   const [repName, setRepName] = useState('');
 
-  const [picked, setPicked] = useState(1.15);
+  const [picked, setPicked] = useState(1);
 
   useEffect(() => {
     if (isLoading) {
@@ -31,7 +74,7 @@ function AddUserScreen() {
         </View>
       )
     }
-    console.log("The device type is ==> ", device_name);
+    console.log("The Picked item is ==> ", picked);
   })
 
   const storeUser = () => {
@@ -72,16 +115,11 @@ function AddUserScreen() {
               onValueChange={(itemValue, itemIndex) =>
                 setPicked(itemValue)
               }>
-              <Picker.Item label="Canda 5%" value={1.05} />
-              <Picker.Item label="Japan 8%" value={1.08} />
-              <Picker.Item label="USA 10%" value={1.10} />
-              <Picker.Item label="Egypt 14%" value={1.14} />
-              <Picker.Item label="Saudi Arabia 15%" value={1.15} />
-              <Picker.Item label="China 16%" value={1.16} />
-              <Picker.Item label="Algeria 17%" value={1.17} />
-              <Picker.Item label="18%" value={1.18} />
-              <Picker.Item label="German 19%" value={1.19} />
-              <Picker.Item label="German 19%" value={1.20} />
+              {picker_Items.map((v, i) => {
+                return (
+                    <Picker.Item key={i} label={v.label} value={v.value} />
+                )
+              })}
             </Picker>
           </View>
         </View>
@@ -95,16 +133,11 @@ function AddUserScreen() {
               onValueChange={(itemValue, itemIndex) =>
                 setPicked(itemValue)
               }>
-              <Picker.Item label="Canda 5%" value={1.05} />
-              <Picker.Item label="Japan 8%" value={1.08} />
-              <Picker.Item label="USA 10%" value={1.10} />
-              <Picker.Item label="Egypt 14%" value={1.14} />
-              <Picker.Item label="Saudi Arabia 15%" value={1.15} />
-              <Picker.Item label="China 16%" value={1.16} />
-              <Picker.Item label="Algeria 17%" value={1.17} />
-              <Picker.Item label="18%" value={1.18} />
-              <Picker.Item label="German 19%" value={1.19} />
-              <Picker.Item label="German 19%" value={1.20} />
+              {picker_Items.map((v, i) => {
+                return (
+                    <Picker.Item key={i} label={v.label} value={v.value} />
+                )
+              })}
             </Picker>
           </View>
         </View>
@@ -224,7 +257,7 @@ const styles = StyleSheet.create({
     //borderWidth:1,
     alignItems: "center",
     textAlign: "center",
-    lineHeight:40
+    lineHeight: 40
   },
   save_button_txt: {
     fontSize: 14,
@@ -233,7 +266,7 @@ const styles = StyleSheet.create({
     //borderWidth:1,
     alignItems: "center",
     textAlign: "center",
-    lineHeight:40
+    lineHeight: 40
   },
   buttons_main_container: {
     paddingTop: 0
