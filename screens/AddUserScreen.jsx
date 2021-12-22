@@ -62,7 +62,9 @@ function AddUserScreen() {
   const device_name = Device.osName;
 
   const [agency, setAgency] = useState('');
-  const [repName, setRepName] = useState('');
+  const [brand,setBrand] = useState('');
+  const [representative_name,setRepresentative_name] = useState("");
+  const [image,setImage] = useState('')
 
   const [picked, setPicked] = useState(1);
 
@@ -79,6 +81,7 @@ function AddUserScreen() {
         console.log("The Picked item label is ==> ", picker_Items[i].label);
       }  
     }
+    console.log("Agency name is : ",agency)
   })
 
   const storeUser = () => {
@@ -88,11 +91,14 @@ function AddUserScreen() {
       setIsLoading(true);
       const dbRef = firebase.firestore().collection('agencies');
       dbRef.add({
-        agency: agency,
-        repName: repName,
+        Category:picked,
+        Agency: agency,
+        Brand: brand,
+        Representative_name:representative_name,
+        Image:image
       }).then((res) => {
         setAgency('');
-        setRepName('');
+        setBrand('');
         setIsLoading(false);
 
         alert("You should now navigate to the listing screen because you've added the item")
@@ -156,8 +162,8 @@ function AddUserScreen() {
         <TextInput
           style={styles.inputtxt}
           placeholder={'Agency name'}
-          value={repName}
-          onChangeText={(val) => setRepName(val)}
+          value={agency}
+          onChangeText={(val) => setAgency(val)}
         />
       </View>
       {/* Agency Name Container */}
@@ -170,8 +176,8 @@ function AddUserScreen() {
         <TextInput
           style={styles.inputtxt}
           placeholder={'Brand name'}
-          value={repName}
-          onChangeText={(val) => setRepName(val)}
+          value={brand}
+          onChangeText={(val) => setBrand(val)}
         />
       </View>
       {/* Brand Name Container */}
@@ -184,8 +190,8 @@ function AddUserScreen() {
         <TextInput
           style={styles.inputtxt}
           placeholder={'First & last name'}
-          value={repName}
-          onChangeText={(val) => setRepName(val)}
+          value={representative_name}
+          onChangeText={(val) => setRepresentative_name(val)}
         />
       </View>
       {/* Representative Name Container */}
@@ -198,8 +204,8 @@ function AddUserScreen() {
         <TextInput
           style={styles.inputtxt}
           placeholder={'Image'}
-          value={repName}
-          onChangeText={(val) => setRepName(val)}
+          value={image}
+          onChangeText={(val) => setImage(val)}
         />
       </View>
       {/* Image Container */}
