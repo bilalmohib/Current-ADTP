@@ -55,18 +55,19 @@ let picker_Items = [
   }
 ]
 
-function AddUserScreen() {
+function AddUserScreen({ navigation }) {
 
   const [isLoading, setIsLoading] = useState(false);
 
   const device_name = Device.osName;
 
   const [agency, setAgency] = useState('');
-  const [brand,setBrand] = useState('');
-  const [representative_name,setRepresentative_name] = useState("");
-  const [image,setImage] = useState('')
+  const [brand, setBrand] = useState('');
+  const [representative_name, setRepresentative_name] = useState("");
+  const [image, setImage] = useState('')
 
   const [picked, setPicked] = useState(1);
+  const [pickedValue,setPickedValue] = useState("");
 
   useEffect(() => {
     if (isLoading) {
@@ -79,30 +80,33 @@ function AddUserScreen() {
     for (let i = 0; i < picker_Items.length; i++) {
       if (picker_Items[i].value == picked) {
         console.log("The Picked item label is ==> ", picker_Items[i].label);
-      }  
+        setPickedValue(picker_Items[i].label);
+      }
     }
-    console.log("Agency name is : ",agency)
+    console.log("Agency name is : ", agency)
   })
 
   const storeUser = () => {
-    if (agency === '') {
-      alert('Fill at least your name!')
+    if (pickedValue === '' || agency === '' || brand === '' || representative_name === '' || image === '') {
+      alert('Fill all the fields!');
     } else {
       setIsLoading(true);
       const dbRef = firebase.firestore().collection('agencies');
       dbRef.add({
-        Category:picked,
+        Category: picked,
         Agency: agency,
         Brand: brand,
-        Representative_name:representative_name,
-        Image:image
+        Representative_name: representative_name,
+        Image: image
       }).then((res) => {
         setAgency('');
         setBrand('');
         setIsLoading(false);
 
-        alert("You should now navigate to the listing screen because you've added the item")
-        //this.props.navigation.navigate('UserScreen')
+        //alert("You should now navigate to the listing screen because you've added the item")
+        //props.navigation.navigate('UserScreen')
+        //navigate('UserScreen')
+        navigation.push('UserScreen');
       })
         .catch((err) => {
           console.error("Error found: ", err);
@@ -215,7 +219,7 @@ function AddUserScreen() {
         {/* Save Button Container */}
         <TouchableOpacity
           style={styles.container_button}
-          onPress={() => alert('Save Button Pressed')}
+          onPress={storeUser}
         >
           <View style={styles.IconContainer}>
             <Entypo name="save" size={23} style={{ lineHeight: 40 }} color="#60AD7F" />
