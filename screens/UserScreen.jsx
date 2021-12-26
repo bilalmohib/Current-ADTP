@@ -79,7 +79,9 @@ class UserScreen extends Component {
         {/* Monsters Container */}
         < TouchableOpacity
           style={styles.container_monsters}
-          onPress={() => alert('Save Button Pressed')}
+          onPress={() => {
+            this.props.navigation.navigate('AddUserScreen');
+          }}
         >
           <Text style={styles.heading_txt}>Monsters</Text>
           <Ionicons name="add-circle-sharp" size={23} style={{ marginLeft: -5, marginTop: 15 }} color="black" />
@@ -95,7 +97,14 @@ class UserScreen extends Component {
         {
           this.state.userArr.map((item, i) => {
             return (
-              <TouchableOpacity key={i} style={styles.agency_list_container}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('UserDetailScreen', {
+                    userkey: item.key
+                  });
+                }}
+                key={i}
+                style={styles.agency_list_container}>
                 <View>
                   <Text style={styles.agency_txt1}>
                     {item.Agency}
@@ -124,8 +133,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 10,
-    borderBottomColor:"#F8F8F8",
-    borderBottomWidth:1
+    borderBottomColor: "#F8F8F8",
+    borderBottomWidth: 1
   },
   agency_txt1: {
     fontSize: 20,

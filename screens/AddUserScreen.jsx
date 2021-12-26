@@ -93,7 +93,7 @@ function AddUserScreen({ navigation }) {
       setIsLoading(true);
       const dbRef = firebase.firestore().collection('agencies');
       dbRef.add({
-        Category: picked,
+        Category: pickedValue,
         Agency: agency,
         Brand: brand,
         Representative_name: representative_name,
