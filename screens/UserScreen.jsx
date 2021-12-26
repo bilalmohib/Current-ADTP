@@ -1,5 +1,5 @@
 // screens/UserScreen.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, View, TouchableOpacity, Text } from 'react-native';
 //Importing the icon family
 import { Entypo } from '@expo/vector-icons';
@@ -8,95 +8,97 @@ import { Ionicons } from '@expo/vector-icons';
 //Importing the icon family
 import firebase from '../database/firebaseDb';
 
-const UserScreen = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [userArr, setUserArr] = useState([])
+class UserScreen extends Component {
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [userArr, setUserArr] = useState([])
 
-  useEffect(() => {
-    if (isLoading) {
-      return (
-        <View style={styles.preloader}>
-          <ActivityIndicator size="large" color="#9E9E9E" />
-        </View>
-      )
-    }
-    firebase.firestore().collection('agencies').onSnapshot(getCollection);
-  })
-  // constructor() {
-  //   super();
-  //   this.firestoreRef = firebase.firestore().collection('agencies');
-  //   this.state = {
-  //     isLoading: true,
-  //     userArr: []
-  //   };
-  // }
-
-  // componentDidMount() {
-  //   this.unsubscribe = this.firestoreRef.onSnapshot(getCollection);
-  // }
-
-  // componentWillUnmount(){
-  //   this.unsubscribe();
-  // }
-
-  const getCollection = (querySnapshot) => {
-    const userArr = [];
-    querySnapshot.forEach((res) => {
-      const { agency, repName } = res.data();
-      userArr.push({
-        key: res.id,
-        res,
-        agency,
-        repName,
-      });
-    });
-    setUserArr(userArr);
-    setIsLoading(false);
+  constructor() {
+    super();
+    this.firestoreRef = firebase.firestore().collection('agencies');
+    this.state = {
+      isLoading: true,
+      userArr: []
+    };
   }
 
-  return (
-    <ScrollView style={styles.container} >
-      {/* Monsters Container */}
-      <TouchableOpacity
-        style={styles.container_monsters}
-        onPress={() => alert('Save Button Pressed')}
+  componentDidMount() {
+    this.unsubscribe = this.firestoreRef.onSnapshot(this.getCollection);
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  // useEffect(() => {
+  //   firebase.firestore().collection('agencies').onSnapshot(getCollection);
+  //   if (isLoading) {
+  //     return (
+  //       <View style={styles.preloader}>
+  //         <ActivityIndicator size="large" color="#9E9E9E" />
+  //       </View>
+  //     )
+  //   }
+  // })
+
+  // const getCollection = (querySnapshot) => {
+  //   const userArr = [];
+
+  //   querySnapshot.forEach((res) => {
+  //     userArr.push({
+  //       key: res.id,
+  //       Category: res.Category,
+  //       Agency: res.Agency,
+  //       Brand: res.Brand,
+  //       Representative_name: res.Representative_name,
+  //       Image: res.Image
+  //     });
+  //   });
+
+  //   console.log("User Array is equal to : ", userArr);
+  //   setUserArr(userArr);
+  //   setIsLoading(false);
+  // }
+
+  return(
+    <ScrollView style = { styles.container } >
+      {/* Monsters Container */ }
+      < TouchableOpacity
+        style = { styles.container_monsters }
+        onPress = {() => alert('Save Button Pressed')}
       >
         <Text style={styles.heading_txt}>Monsters</Text>
         <Ionicons name="add-circle-sharp" size={23} style={{ marginLeft: -5, marginTop: 15 }} color="black" />
-      </TouchableOpacity>
-      {/* Monsters Container */}
+      </TouchableOpacity >
+  {/* Monsters Container */ }
 
-      <View>
-        <Text style={styles.headingTop}>
-          List of monster 👹
-        </Text>
+  < View >
+  <Text style={styles.headingTop}>
+    List of monster 👹
+  </Text>
+      </View >
+
+{
+  userArr.map((item, i) => {
+    return (
+      <View key={i} style={styles.agency_list_container}>
+        <View>
+          <Text style={styles.agency_txt1}>
+            {item.Agency}
+          </Text>
+          <Text style={styles.agency_txt2}>
+            {item.Brand}
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.agency_txt1}>
+            33
+          </Text>
+        </View>
       </View>
-
-
-
-
-      {
-        userArr.map((item, i) => {
-          return (
-            <View key={i} style={styles.agency_list_container}>
-              <View>
-                <Text style={styles.agency_txt1}>
-                  Agency Name
-                </Text>
-                <Text style={styles.agency_txt2}>
-                  Brand
-                </Text>
-              </View>
-              <View>
-                <Text style={styles.agency_txt1}>
-                  33
-                </Text>
-              </View>
-            </View>
-          );
-        })
-      }
-    </ScrollView>
+    );
+  })
+}
+    </ScrollView >
   );
 }
 const styles = StyleSheet.create({

@@ -21,14 +21,14 @@ function MyStack() {
         },
       }}>
       <Stack.Screen
-        name="AddUserScreen"
-        component={AddUserScreen}
-        options={{ title: 'Select or add to the list' }}
-      />
-      <Stack.Screen
         name="UserScreen"
         component={UserScreen}
         options={{ title: 'Agency List' }}
+      />
+      <Stack.Screen
+        name="AddUserScreen"
+        component={AddUserScreen}
+        options={{ title: 'Select or add to the list' }}
       />
       <Stack.Screen
         name="UserDetailScreen"
