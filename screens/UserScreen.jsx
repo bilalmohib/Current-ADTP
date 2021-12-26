@@ -40,66 +40,82 @@ class UserScreen extends Component {
   //   }
   // })
 
-  // const getCollection = (querySnapshot) => {
-  //   const userArr = [];
+  getCollection = (querySnapshot) => {
+    const userArr = [];
+    querySnapshot.forEach((res) => {
+      const {
+        Category,
+        Agency,
+        Brand,
+        Representative_name,
+        Image
+      } = res.data();
+      userArr.push({
+        key: res.id,
+        Category,
+        Agency,
+        Brand,
+        Representative_name,
+        Image
+      });
+    });
 
-  //   querySnapshot.forEach((res) => {
-  //     userArr.push({
-  //       key: res.id,
-  //       Category: res.Category,
-  //       Agency: res.Agency,
-  //       Brand: res.Brand,
-  //       Representative_name: res.Representative_name,
-  //       Image: res.Image
-  //     });
-  //   });
-
-  //   console.log("User Array is equal to : ", userArr);
-  //   setUserArr(userArr);
-  //   setIsLoading(false);
-  // }
-
-  return(
-    <ScrollView style = { styles.container } >
-      {/* Monsters Container */ }
-      < TouchableOpacity
-        style = { styles.container_monsters }
-        onPress = {() => alert('Save Button Pressed')}
-      >
-        <Text style={styles.heading_txt}>Monsters</Text>
-        <Ionicons name="add-circle-sharp" size={23} style={{ marginLeft: -5, marginTop: 15 }} color="black" />
-      </TouchableOpacity >
-  {/* Monsters Container */ }
-
-  < View >
-  <Text style={styles.headingTop}>
-    List of monster 👹
-  </Text>
-      </View >
-
-{
-  userArr.map((item, i) => {
+    console.log("User Array is equal to : ", userArr);
+    this.setState({
+      userArr,
+      isLoading: false,
+    });
+  }
+  render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.preloader}>
+          <ActivityIndicator size="large" color="#9E9E9E" />
+        </View>
+      )
+    }
     return (
-      <View key={i} style={styles.agency_list_container}>
-        <View>
-          <Text style={styles.agency_txt1}>
-            {item.Agency}
-          </Text>
-          <Text style={styles.agency_txt2}>
-            {item.Brand}
+      <ScrollView style={styles.container} >
+        {/* Monsters Container */}
+        < TouchableOpacity
+          style={styles.container_monsters}
+          onPress={() => alert('Save Button Pressed')}
+        >
+          <Text style={styles.heading_txt}>Monsters</Text>
+          <Ionicons name="add-circle-sharp" size={23} style={{ marginLeft: -5, marginTop: 15 }} color="black" />
+        </TouchableOpacity >
+        {/* Monsters Container */}
+
+        < View>
+          <Text style={styles.headingTop}>
+            List of monster 👹
           </Text>
         </View>
-        <View>
-          <Text style={styles.agency_txt1}>
-            33
-          </Text>
-        </View>
-      </View>
+
+        {
+          this.state.userArr.map((item, i) => {
+            return (
+              <TouchableOpacity key={i} style={styles.agency_list_container}>
+                <View>
+                  <Text style={styles.agency_txt1}>
+                    {item.Agency}
+                  </Text>
+                  <Text style={styles.agency_txt2}>
+                    {item.Brand}
+                  </Text>
+                </View>
+                <View>
+                  <Text style={styles.agency_txt1}>
+                    {item.key}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })
+        }
+      </ScrollView >
     );
-  })
-}
-    </ScrollView >
-  );
+  }
 }
 const styles = StyleSheet.create({
   agency_list_container: {
@@ -107,7 +123,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10
+    padding: 10,
+    borderBottomColor:"#F8F8F8",
+    borderBottomWidth:1
   },
   agency_txt1: {
     fontSize: 20,
