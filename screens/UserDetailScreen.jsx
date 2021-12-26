@@ -6,7 +6,7 @@ import { Entypo } from '@expo/vector-icons';
 import img from "../assets/User_details.png";
 import firebase from '../database/firebaseDb';
 
-function UserDetailScreen() {
+function UserDetailScreen({route}) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -74,14 +74,14 @@ function UserDetailScreen() {
       <View style={styles.container}>
         <View style={styles.agency_name_container}>
           <View style={styles.halfWidth}>
-            <Text style={styles.agency_txt}>Agency name</Text>
+            <Text style={styles.agency_txt}>{route.params.Agency}</Text>
           </View>
           <View>
-            <Text style={styles.agency_txt}>10</Text>
+            <Text style={styles.agency_txt}>{route.params.userkey}</Text>
           </View>
         </View>
         <View>
-          <Text style={styles.representative_txt}>Representative name</Text>
+          <Text style={styles.representative_txt}>{route.params.Representative_name}</Text>
           <Text style={styles.txt_description}>The same monster also produced</Text>
         </View>
         <View>

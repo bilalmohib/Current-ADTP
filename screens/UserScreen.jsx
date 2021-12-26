@@ -100,7 +100,10 @@ class UserScreen extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.navigate('UserDetailScreen', {
-                    userkey: item.key
+                    userkey: item.key,
+                    Agency:item.Agency,
+                    Representative_name:item.Representative_name,
+                    Brand:item.Brand
                   });
                 }}
                 key={i}
