@@ -6,7 +6,7 @@ import { Entypo } from '@expo/vector-icons';
 import img from "../assets/User_details.png";
 import firebase from '../database/firebaseDb';
 
-function UserDetailScreen({route}) {
+function UserDetailScreen({ route }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -95,7 +95,9 @@ function UserDetailScreen({route}) {
           style={styles.container_edit_button}
           onPress={() => alert('Edit Button Pressed')}
         >
-          <Entypo name="edit" size={23} style={{ marginLeft: 12, marginTop: 12 }} color="rgba(0, 0, 0, 0.87)" />
+          <View style={styles.IconContainer}>
+            <Entypo name="edit" size={23} style={{ marginLeft: 12, marginTop: 12 }} color="rgba(0, 0, 0, 0.87)" />
+          </View>
           <Text style={styles.edit_txt}>EDIT</Text>
         </TouchableOpacity>
         {/* <View style={styles.inputGroup}>

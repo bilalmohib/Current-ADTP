@@ -67,7 +67,7 @@ function AddUserScreen({ navigation }) {
   const [image, setImage] = useState('')
 
   const [picked, setPicked] = useState(1);
-  const [pickedValue,setPickedValue] = useState("");
+  const [pickedValue, setPickedValue] = useState("");
 
   useEffect(() => {
     if (isLoading) {
@@ -117,6 +117,12 @@ function AddUserScreen({ navigation }) {
 
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.snackBar}>
+        <View style={styles.IconContainer}>
+          <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#ffffff" />
+        </View>
+        <Text style={styles.snack_txt}>Agency was added to the list</Text>
+      </View>
 
       {/* Choose Agency Container */}
       {(device_name == "iOS") ? (
@@ -247,6 +253,25 @@ function AddUserScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  snackBar: {
+    borderWidth: 0.5,
+    borderColor: "#60AD7F",
+    backgroundColor: "#60AD7F",
+    flexDirection: "row",
+    flex:1,
+    alignItems: "center",
+    position: "absolute",
+    height: 54,
+    width: "90%",
+    zIndex: 2,
+    shadowColor: "rgba(32, 32, 32, 0.08)",
+    shadowRadius: "0px 9.75px 9.75px -7.3125px",
+    borderRadius: 3.25,
+    left: "5%",
+    top: 75,
+    // box-shadow: 0px 9.75px 9.75px -7.3125px rgba(32, 32, 32, 0.08);
+    // border-radius: 3.25px;
+  },
   IconContainer: {
     width: "10%",
     //borderWidth: 1,
@@ -263,6 +288,16 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     flex: 1,
     flexDirection: "row"
+  },
+  snack_txt: {
+    fontSize: 14,
+    color: "#ffffff",
+    width: "90%",
+    // borderWidth:1,
+    alignItems: "left",
+    textAlign: "left",
+    lineHeight: 40,
+    left:37
   },
   delete_button_txt: {
     fontSize: 14,
