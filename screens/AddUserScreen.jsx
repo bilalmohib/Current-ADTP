@@ -59,6 +59,8 @@ function AddUserScreen({ navigation }) {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [visibility, setVisibility] = useState(false);
+
   const device_name = Device.osName;
 
   const [agency, setAgency] = useState('');
@@ -106,7 +108,9 @@ function AddUserScreen({ navigation }) {
         //alert("You should now navigate to the listing screen because you've added the item")
         //props.navigation.navigate('UserScreen')
         //navigate('UserScreen')
-        navigation.push('UserScreen');
+        setVisibility(true);
+        setTimeout(() => { navigation.push('UserScreen'); }, 5000);
+        setTimeout(() => { setVisibility(false); }, 5000);
       })
         .catch((err) => {
           console.error("Error found: ", err);
@@ -117,12 +121,18 @@ function AddUserScreen({ navigation }) {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.snackBar}>
-        <View style={styles.IconContainer}>
-          <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#ffffff" />
+
+      {(visibility) ? (
+        <View style={styles.snackBar}>
+          <View style={styles.IconContainer}>
+            <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#ffffff" />
+          </View>
+          <Text style={styles.snack_txt}>Agency was added to the list</Text>
         </View>
-        <Text style={styles.snack_txt}>Agency was added to the list</Text>
-      </View>
+      ) : (
+        <></>
+      )}
+
 
       {/* Choose Agency Container */}
       {(device_name == "iOS") ? (
@@ -258,7 +268,7 @@ const styles = StyleSheet.create({
     borderColor: "#60AD7F",
     backgroundColor: "#60AD7F",
     flexDirection: "row",
-    flex:1,
+    flex: 1,
     alignItems: "center",
     position: "absolute",
     height: 54,
@@ -297,7 +307,7 @@ const styles = StyleSheet.create({
     alignItems: "left",
     textAlign: "left",
     lineHeight: 40,
-    left:37
+    left: 37
   },
   delete_button_txt: {
     fontSize: 14,
