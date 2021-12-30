@@ -96,7 +96,7 @@ function UserDetailScreen({ route }) {
           onPress={() => alert('Edit Button Pressed')}
         >
           <View style={styles.IconContainer}>
-            <Entypo name="edit" size={23} style={{ marginLeft: 12, marginTop: 12 }} color="rgba(0, 0, 0, 0.87)" />
+            <Entypo name="edit" size={23} style={{ lineHeight: 40 }} color="rgba(0, 0, 0, 0.87)" />
           </View>
           <Text style={styles.edit_txt}>EDIT</Text>
         </TouchableOpacity>
@@ -134,6 +134,11 @@ function UserDetailScreen({ route }) {
 }
 
 const styles = StyleSheet.create({
+  IconContainer: {
+    width: "10%",
+    //borderWidth: 1,
+    alignItems: "center"
+  },
   container_edit_button: {
     marginTop: 20,
     borderColor: "rgba(0, 0, 0, 0.12)",
@@ -149,11 +154,11 @@ const styles = StyleSheet.create({
   edit_txt: {
     fontSize: 14,
     color: "#979797",
-    width: "85%",
-    // borderWidth:1,
+    width: "90%",
+    //borderWidth:1,
     alignItems: "center",
     textAlign: "center",
-    paddingTop: 15
+    lineHeight: 40
   },
   agency_name_container: {
     flex: 1,
