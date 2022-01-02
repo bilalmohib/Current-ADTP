@@ -210,11 +210,6 @@ function AddUserScreen({ navigation }) {
     if (agency != '') {
       let length = pickerItems.length;
       //console.log("Length is ", length, agency);
-      // let temp_picker_items = pickerItems;
-      // temp_picker_items.push({
-      //   label: agency,
-      //   value: length
-      // })
 
       //console.log("--===================> ",temp_picker_items)
 
