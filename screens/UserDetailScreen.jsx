@@ -100,40 +100,16 @@ function UserDetailScreen({ route }) {
           </View>
           <Text style={styles.edit_txt}>EDIT</Text>
         </TouchableOpacity>
-        {/* <View style={styles.inputGroup}>
-          <TextInput
-            placeholder={'Name'}
-            value={this.state.agency}
-            onChangeText={(val) => this.inputValueUpdate(val, 'agency')}
-          />
-        </View>
-        <View style={styles.inputGroup}>
-          <TextInput
-            placeholder={'Rep name'}
-            value={this.state.repName}
-            onChangeText={(val) => this.inputValueUpdate(val, 'repName')}
-          />
-        </View>
-        <View style={styles.button}>
-          <Button
-            title='Update'
-            onPress={() => this.updateUser()}
-            color="#19AC52"
-          />
-        </View>
-        <View>
-          <Button
-            title='Delete'
-            onPress={this.openTwoButtonAlert}
-            color="#E37399"
-          />
-        </View> */}
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  tinyLogo: {
+    width: "100%",
+    height: 273
+  },
   IconContainer: {
     width: "10%",
     //borderWidth: 1,
