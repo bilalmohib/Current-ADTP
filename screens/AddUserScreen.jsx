@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, Text, StyleSheet, TextInput, ScrollView, ActivityIndicator, View } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  ActivityIndicator,
+  View,
+  Button,
+  Image,
+  Platform
+} from 'react-native';
 //Importing the icon family
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -9,6 +20,9 @@ import { Picker } from 'react-native'
 
 //Importing Device API to check the device type to render different content for android and ios
 import * as Device from 'expo-device';
+
+//Importing Image Picker 
+import * as ImagePicker from 'expo-image-picker';
 
 import firebase from '../database/firebaseDb';
 
@@ -61,6 +75,9 @@ function AddUserScreen({ navigation }) {
 
   const [visibility, setVisibility] = useState(false);
 
+  const [imageUri, setImageUri] = useState(null);
+
+
   const device_name = Device.osName;
 
   const [agency, setAgency] = useState('');
@@ -87,6 +104,22 @@ function AddUserScreen({ navigation }) {
     }
     console.log("Agency name is : ", agency)
   })
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log("Result ==> ", result);
+
+    if (!result.cancelled) {
+      setImageUri(result.uri);
+    }
+  };
 
   const storeUser = () => {
     if (pickedValue === '' || agency === '' || brand === '' || representative_name === '' || image === '') {
@@ -137,48 +170,48 @@ function AddUserScreen({ navigation }) {
       {/* Choose Agency Container */}
       {(device_name == "iOS") ? (
         <View style={styles.inputGroupTop}>
-          <View>
-            <Text style={styles.labelTop}>Agency name</Text>
-            <Picker
-              selectedValue={picked}
-              style={styles.picker}
-              onValueChange={(itemValue, itemIndex) =>
-                setPicked(itemValue)
-              }>
-              {picker_Items.map((v, i) => {
-                return (
-                  <Picker.Item key={i} label={v.label} value={v.value} />
-                )
-              })}
-            </Picker>
-          </View>
+
+          <Text style={styles.labelTop}>Agency name</Text>
+          <Picker
+            selectedValue={picked}
+            style={styles.picker}
+            onValueChange={(itemValue, itemIndex) =>
+              setPicked(itemValue)
+            }>
+            {picker_Items.map((v, i) => {
+              return (
+                <Picker.Item key={i} label={v.label} value={v.value} />
+              )
+            })}
+          </Picker>
+
         </View>
       ) : (
         <View style={styles.inputGroupTop}>
-          <View>
-            <Text style={styles.labelTop}>Agency name</Text>
-            <Picker
-              selectedValue={picked}
-              style={styles.picker}
-              onValueChange={(itemValue, itemIndex) =>
-                setPicked(itemValue)
-              }>
-              {picker_Items.map((v, i) => {
-                return (
-                  <Picker.Item key={i} label={v.label} value={v.value} />
-                )
-              })}
-            </Picker>
-          </View>
+
+          <Text style={styles.labelTop}>Agency name</Text>
+          <Picker
+            selectedValue={picked}
+            style={styles.picker}
+            onValueChange={(itemValue, itemIndex) =>
+              setPicked(itemValue)
+            }>
+            {picker_Items.map((v, i) => {
+              return (
+                <Picker.Item key={i} label={v.label} value={v.value} />
+              )
+            })}
+          </Picker>
+
         </View>
       )}
       {/* Choose Agency Container */}
 
       {/* Agency Name Container */}
       <View style={styles.inputGroup}>
-        <View>
-          <Text style={styles.label}>Add New</Text>
-        </View>
+
+        <Text style={styles.label}>Add New</Text>
+
         <TextInput
           style={styles.inputtxt}
           placeholder={'Agency name'}
@@ -190,9 +223,9 @@ function AddUserScreen({ navigation }) {
 
       {/* Brand Name Container */}
       <View style={styles.inputGroup}>
-        <View>
-          <Text style={styles.label}>Brand</Text>
-        </View>
+
+        <Text style={styles.label}>Brand</Text>
+
         <TextInput
           style={styles.inputtxt}
           placeholder={'Brand name'}
@@ -204,9 +237,9 @@ function AddUserScreen({ navigation }) {
 
       {/* Representative Name Container */}
       <View style={styles.inputGroup}>
-        <View>
-          <Text style={styles.label}>Repersentative Name</Text>
-        </View>
+
+        <Text style={styles.label}>Repersentative Name</Text>
+
         <TextInput
           style={styles.inputtxt}
           placeholder={'First & last name'}
@@ -218,17 +251,15 @@ function AddUserScreen({ navigation }) {
 
       {/* Image Container */}
       <View style={styles.inputGroup}>
-        <View>
-          <Text style={styles.label}>Image</Text>
-        </View>
-        <TextInput
-          style={styles.inputtxt}
-          placeholder={'Image'}
-          value={image}
-          onChangeText={(val) => setImage(val)}
-        />
+        <Text style={styles.label}>Image</Text>
+        <TouchableOpacity style={styles.inputtxt} onPress={pickImage}>
+          <Text>Pick an image from camera roll</Text>
+        </TouchableOpacity>
+
       </View>
       {/* Image Container */}
+
+      {imageUri && <Image source={{ uri: imageUri }} style={{ width: "100%", height: 400 }} />}
 
       {/* ---------------------------Main Button Container--------------------------- */}
       <View style={styles.buttons_main_container}>
