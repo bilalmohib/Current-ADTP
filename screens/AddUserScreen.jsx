@@ -30,7 +30,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import "firebase/storage";
 
-import firebase, { storage, storage } from '../database/firebaseDb';
+// import firebase, { storage, storage } from '../database/firebaseDb';
 
 let picker_Items = [
   {
@@ -79,6 +79,8 @@ function AddUserScreen({ navigation }) {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [pickerItems, setPickerItems] = useState(picker_Items);
+
   const [visibility, setVisibility] = useState(false);
 
   const [imageUri, setImageUri] = useState(null);
@@ -108,7 +110,8 @@ function AddUserScreen({ navigation }) {
         setPickedValue(picker_Items[i].label);
       }
     }
-    console.log("Agency name is : ", agency)
+    console.log("Agency name is : ", agency);
+    console.log("Picker Items is ==> ", pickerItems);
   })
 
   const pickImage = async () => {
@@ -135,27 +138,40 @@ function AddUserScreen({ navigation }) {
       //   console.log('Uploaded a data_url string!',snapshot);
       // });
       // 'file' comes from the Blob or File API
-      storageRef.put(file).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-      });
+      // storageRef.put(file).then((snapshot) => {
+      //   console.log('Uploaded a blob or file!');
+      // });
 
     }
   };
 
+  const addAgency = () => {
+    if (agency != '') {
+      let length = pickerItems.length;
+      console.log("Length is ", length);
+      // pickerItems.push({
+
+      // })
+    }
+    else {
+      alert("Please enter an agency name to add it to the list.");
+    }
+  }
+
   const storeUser = () => {
-    if (pickedValue === '' || agency === '' || brand === '' || representative_name === '' || image === '') {
+    if (pickedValue === '' || brand === '' || representative_name === '' || image === '') {
       alert('Fill all the fields!');
     } else {
       setIsLoading(true);
       const dbRef = firebase.firestore().collection('agencies');
       dbRef.add({
         Category: pickedValue,
-        Agency: agency,
+        // Agency: agency,
         Brand: brand,
         Representative_name: representative_name,
         Image: image
       }).then((res) => {
-        setAgency('');
+        // setAgency('');
         setBrand('');
         setIsLoading(false);
 
@@ -199,7 +215,7 @@ function AddUserScreen({ navigation }) {
             onValueChange={(itemValue, itemIndex) =>
               setPicked(itemValue)
             }>
-            {picker_Items.map((v, i) => {
+            {pickerItems.map((v, i) => {
               return (
                 <Picker.Item key={i} label={v.label} value={v.value} />
               )
@@ -217,7 +233,7 @@ function AddUserScreen({ navigation }) {
             onValueChange={(itemValue, itemIndex) =>
               setPicked(itemValue)
             }>
-            {picker_Items.map((v, i) => {
+            {pickerItems.map((v, i) => {
               return (
                 <Picker.Item key={i} label={v.label} value={v.value} />
               )
@@ -230,17 +246,22 @@ function AddUserScreen({ navigation }) {
 
       {/* Agency Name Container */}
       <View style={styles.inputGroup}>
+        <View style={{borderWidth:2}}>
+          <Text style={styles.label}>Add New</Text>
 
-        <Text style={styles.label}>Add New</Text>
-
-        <TextInput
-          style={styles.inputtxt}
-          placeholder={'Agency name'}
-          value={agency}
-          onChangeText={(val) => setAgency(val)}
-        />
+          <TextInput
+            style={styles.inputtxt}
+            placeholder={'Agency name'}
+            value={agency}
+            onChangeText={(val) => setAgency(val)}
+          />
+        </View>
       </View>
       {/* Agency Name Container */}
+
+      <View>
+        <Text>dslaf;jklsadfj</Text>
+      </View>
 
       {/* Brand Name Container */}
       <View style={styles.inputGroup}>
