@@ -96,6 +96,8 @@ function AddUserScreen({ navigation }) {
   const [picked, setPicked] = useState(1);
   const [pickedValue, setPickedValue] = useState('');
 
+  const [selected_brand_count,set_selected_brand_count] = useState(0);
+
   //Show Agency Add
   const [showAgencyAdd, setShowAgencyAdd] = useState(false);
 
