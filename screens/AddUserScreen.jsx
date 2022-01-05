@@ -96,12 +96,37 @@ function AddUserScreen({ navigation }) {
   const [picked, setPicked] = useState(1);
   const [pickedValue, setPickedValue] = useState('');
 
-  const [selected_brand_count,set_selected_brand_count] = useState(0);
+  const [selected_brand_count, set_selected_brand_count] = useState(0);
+
+  //For storing retrieved data
+  const [firestoreData, setFirestoreData] = useState([]);
 
   //Show Agency Add
   const [showAgencyAdd, setShowAgencyAdd] = useState(false);
+  const [addCount, setAddCount] = useState(false);
 
   useEffect(() => {
+
+    if (pickedValue != '') {
+      //For counting the number of times this Company has been choosen its count
+      let count = 0;
+      for (let i = 0; i < firestoreData.length; i++) {
+        if (firestoreData[i].Agency == pickedValue) {
+          count = count + 1;
+        }
+      }
+
+      //console.log(`The slected agency '${pickedValue}' had appeared "${count}" number of times previously`);
+      console.log(`The slected agency '${pickedValue}' had appeared "${count}" number of times previously`);
+      // if (addCount) {
+      console.log("----------?" + count)
+      set_selected_brand_count(count);
+      // setAddCount(false);
+      //}
+      // setAddCount(false);
+      //For counting the number of times this Company has been choosen its count
+    }
+
     if (isLoading) {
       return (
         <View style={styles.preloader}>
@@ -111,12 +136,43 @@ function AddUserScreen({ navigation }) {
     }
     for (let i = 0; i < pickerItems.length; i++) {
       if (pickerItems[i].value == picked) {
-        console.log("The Picked item label is ==> ", pickerItems[i].label);
+        //console.log("The Picked item label is ==> ", pickerItems[i].label);
         setPickedValue(pickerItems[i].label);
       }
     }
-    console.log("Agency name is : ", agency);
-    console.log("Picker Items is ==> ", pickerItems);
+    // console.log("Agency name is : ", agency);
+    // console.log("Picker Items is ==> ", pickerItems);
+
+    // console.log("Data from firestore equals ==> ", firestoreData);
+
+    //Retrieving the data from firestore for purpose of counter 
+    if (true) {
+      const db = firebase.firestore();
+      db.collection(`agencies`)
+        .get()
+        .then(snapshot => {
+          let data = [];
+          snapshot.forEach(element => {
+            data.push(Object.assign({
+              id: element.id,
+              "Agency": element.Agency,
+              "Brand": element.Brand,
+              "Representative_name": element.Representative_name,
+              "Image": element.Image,
+            }, element.data()))
+          })
+          // console.log("data=> ", data)
+
+          if (firestoreData.length != data.length) {
+            setFirestoreData(data);
+            // console.log("Updated")
+          }
+        }).catch(err => {
+          console.log("Firebase data error ==> ", err)
+        })
+    }
+    //
+
   })
 
   const pickImage = async () => {
@@ -167,7 +223,7 @@ function AddUserScreen({ navigation }) {
           ...pickerItems,
           {
             label: agency,
-            value: length+1
+            value: length + 1
           }
         ]
       );
@@ -185,17 +241,23 @@ function AddUserScreen({ navigation }) {
     } else {
       setIsLoading(true);
       const dbRef = firebase.firestore().collection('agencies');
+      let count = selected_brand_count + 1;
       dbRef.add({
         Agency: pickedValue,
         // Agency: agency,
         Brand: brand,
         Representative_name: representative_name,
-        Image: "imageUri"
+        Image: "imageUri",
+        Count: count
       }).then((res) => {
         // setAgency('');
         setVisibility(true);
         setPickedValue('');
         setBrand('');
+        setAgency('');
+        setPicked(1);
+        setRepresentative_name('');
+        set_selected_brand_count(0);
         setIsLoading(false);
         setImageUri('');
         //alert("You should now navigate to the listing screen because you've added the item")
@@ -232,8 +294,10 @@ function AddUserScreen({ navigation }) {
           <Picker
             selectedValue={picked}
             style={styles.picker}
-            onValueChange={(itemValue, itemIndex) =>
+            onValueChange={(itemValue, itemIndex) => {
               setPicked(itemValue)
+              setAddCount(true)
+            }
             }>
             {pickerItems.map((v, i) => {
               return (
@@ -251,7 +315,8 @@ function AddUserScreen({ navigation }) {
             style={styles.picker}
             onValueChange={(itemValue, itemIndex) => {
               setPicked(itemValue)
-              console.log(" ): ",itemIndex)
+              setAddCount(true)
+              // console.log(" ): ", itemIndex)
             }
             }>
             {pickerItems.map((v, i) => {

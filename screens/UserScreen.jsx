@@ -44,18 +44,19 @@ class UserScreen extends Component {
     const userArr = [];
     querySnapshot.forEach((res) => {
       const {
-        Category,
         Agency,
         Brand,
         Representative_name,
-        Image
+        Image,
+        Count
       } = res.data();
       userArr.push({
         key: res.id,
         Agency,
         Brand,
         Representative_name,
-        Image
+        Image,
+        Count
       });
     });
 
@@ -103,7 +104,8 @@ class UserScreen extends Component {
                     Agency: item.Agency,
                     Representative_name: item.Representative_name,
                     Brand: item.Brand,
-                    Image: item.Image
+                    Image: item.Image,
+                    Count:item.Count
                   });
                 }}
                 key={i}
@@ -118,7 +120,7 @@ class UserScreen extends Component {
                 </View>
                 <View>
                   <Text style={styles.agency_txt1}>
-                    {i}
+                    {item.Count}
                   </Text>
                 </View>
               </TouchableOpacity>
