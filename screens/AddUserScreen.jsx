@@ -15,16 +15,22 @@ import {
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
+import { ProgressBar, Colors } from 'react-native-paper';
+
 // Importing the react native drop down picker
 import { Picker } from 'react-native'
 
 //Importing Device API to check the device type to render different content for android and ios
 import * as Device from 'expo-device';
 
+import alt from "../assets/alter.png";
+
 //Importing Image Picker 
 import * as ImagePicker from 'expo-image-picker';
 
-import firebase from '../database/firebaseDb';
+import "firebase/storage";
+
+import firebase, { storage, storage } from '../database/firebaseDb';
 
 let picker_Items = [
   {
@@ -116,8 +122,23 @@ function AddUserScreen({ navigation }) {
 
     console.log("Result ==> ", result);
 
+    //For Uploading Images to Cloud Storage
+    // Create a root reference
+    var storageRef = firebase.storage().ref();
+    // const storageRef = ref(storage, 'some-child');
+
     if (!result.cancelled) {
       setImageUri(result.uri);
+      // Data URL string
+      // const message4 = result.uri;
+      // uploadString(storageRef, message4, 'data_url').then((snapshot) => {
+      //   console.log('Uploaded a data_url string!',snapshot);
+      // });
+      // 'file' comes from the Blob or File API
+      storageRef.put(file).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+      });
+
     }
   };
 
@@ -259,7 +280,17 @@ function AddUserScreen({ navigation }) {
       </View>
       {/* Image Container */}
 
-      {imageUri && <Image source={{ uri: imageUri }} style={{ width: "100%", height: 400 }} />}
+      <ProgressBar style={{ marginTop: 10, marginBottom: 20, borderRadius: 10, width: "100%", height: 15 }} progress={0.5} color="#7db597" />
+
+      <View style={styles.ImageContainer}>
+        {(imageUri) ?
+          (
+            <Image source={{ uri: imageUri }} style={{ width: "40%", height: 300, borderRadius: 10 }} />
+          ) : (
+            <Image source={alt} style={{ width: "40%", height: 300, borderRadius: 10 }} />
+          )
+        }
+      </View>
 
       {/* ---------------------------Main Button Container--------------------------- */}
       <View style={styles.buttons_main_container}>
@@ -294,6 +325,10 @@ function AddUserScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  ImageContainer: {
+    alignItems: "center"
+
+  },
   snackBar: {
     borderWidth: 0.5,
     borderColor: "#60AD7F",
