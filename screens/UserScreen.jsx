@@ -52,7 +52,6 @@ class UserScreen extends Component {
       } = res.data();
       userArr.push({
         key: res.id,
-        Category,
         Agency,
         Brand,
         Representative_name,
@@ -101,9 +100,10 @@ class UserScreen extends Component {
                 onPress={() => {
                   this.props.navigation.navigate('UserDetailScreen', {
                     userkey: item.key,
-                    Agency:item.Agency,
-                    Representative_name:item.Representative_name,
-                    Brand:item.Brand
+                    Agency: item.Agency,
+                    Representative_name: item.Representative_name,
+                    Brand: item.Brand,
+                    Image: item.Image
                   });
                 }}
                 key={i}
@@ -118,7 +118,7 @@ class UserScreen extends Component {
                 </View>
                 <View>
                   <Text style={styles.agency_txt1}>
-                    {item.key}
+                    {i}
                   </Text>
                 </View>
               </TouchableOpacity>

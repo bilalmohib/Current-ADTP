@@ -30,7 +30,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import "firebase/storage";
 
-// import firebase, { storage, storage } from '../database/firebaseDb';
+import firebase from '../database/firebaseDb';
 
 let picker_Items = [
   {
@@ -90,11 +90,14 @@ function AddUserScreen({ navigation }) {
 
   const [agency, setAgency] = useState('');
   const [brand, setBrand] = useState('');
-  const [representative_name, setRepresentative_name] = useState("");
+  const [representative_name, setRepresentative_name] = useState('');
   const [image, setImage] = useState('')
 
   const [picked, setPicked] = useState(1);
-  const [pickedValue, setPickedValue] = useState("");
+  const [pickedValue, setPickedValue] = useState('');
+
+  //Show Agency Add
+  const [showAgencyAdd, setShowAgencyAdd] = useState(false);
 
   useEffect(() => {
     if (isLoading) {
@@ -104,10 +107,10 @@ function AddUserScreen({ navigation }) {
         </View>
       )
     }
-    for (let i = 0; i < picker_Items.length; i++) {
-      if (picker_Items[i].value == picked) {
-        console.log("The Picked item label is ==> ", picker_Items[i].label);
-        setPickedValue(picker_Items[i].label);
+    for (let i = 0; i < pickerItems.length; i++) {
+      if (pickerItems[i].value == picked) {
+        console.log("The Picked item label is ==> ", pickerItems[i].label);
+        setPickedValue(pickerItems[i].label);
       }
     }
     console.log("Agency name is : ", agency);
@@ -123,11 +126,11 @@ function AddUserScreen({ navigation }) {
       quality: 1,
     });
 
-    console.log("Result ==> ", result);
+    console.log("Result of Image ==> ", result);
 
     //For Uploading Images to Cloud Storage
     // Create a root reference
-    var storageRef = firebase.storage().ref();
+    // var storageRef = firebase.storage().ref();
     // const storageRef = ref(storage, 'some-child');
 
     if (!result.cancelled) {
@@ -148,10 +151,26 @@ function AddUserScreen({ navigation }) {
   const addAgency = () => {
     if (agency != '') {
       let length = pickerItems.length;
-      console.log("Length is ", length);
-      // pickerItems.push({
-
+      //console.log("Length is ", length, agency);
+      // let temp_picker_items = pickerItems;
+      // temp_picker_items.push({
+      //   label: agency,
+      //   value: length
       // })
+
+      //console.log("--===================> ",temp_picker_items)
+
+      setPickerItems(
+        [
+          ...pickerItems,
+          {
+            label: agency,
+            value: length+1
+          }
+        ]
+      );
+      setShowAgencyAdd(false);
+      alert("Agency Added");
     }
     else {
       alert("Please enter an agency name to add it to the list.");
@@ -159,28 +178,29 @@ function AddUserScreen({ navigation }) {
   }
 
   const storeUser = () => {
-    if (pickedValue === '' || brand === '' || representative_name === '' || image === '') {
+    if (pickedValue === '' || brand === '' || representative_name === '' || imageUri === '') {
       alert('Fill all the fields!');
     } else {
       setIsLoading(true);
       const dbRef = firebase.firestore().collection('agencies');
       dbRef.add({
-        Category: pickedValue,
+        Agency: pickedValue,
         // Agency: agency,
         Brand: brand,
         Representative_name: representative_name,
-        Image: image
+        Image: "imageUri"
       }).then((res) => {
         // setAgency('');
+        setVisibility(true);
+        setPickedValue('');
         setBrand('');
         setIsLoading(false);
-
+        setImageUri('');
         //alert("You should now navigate to the listing screen because you've added the item")
         //props.navigation.navigate('UserScreen')
         //navigate('UserScreen')
-        setVisibility(true);
-        setTimeout(() => { navigation.push('UserScreen'); }, 5000);
-        setTimeout(() => { setVisibility(false); }, 5000);
+        setTimeout(() => { navigation.push('UserScreen'); }, 2000);
+        setTimeout(() => { setVisibility(false); }, 4000);
       })
         .catch((err) => {
           console.error("Error found: ", err);
@@ -203,11 +223,9 @@ function AddUserScreen({ navigation }) {
         <></>
       )}
 
-
       {/* Choose Agency Container */}
       {(device_name == "iOS") ? (
         <View style={styles.inputGroupTop}>
-
           <Text style={styles.labelTop}>Agency name</Text>
           <Picker
             selectedValue={picked}
@@ -221,7 +239,6 @@ function AddUserScreen({ navigation }) {
               )
             })}
           </Picker>
-
         </View>
       ) : (
         <View style={styles.inputGroupTop}>
@@ -230,8 +247,10 @@ function AddUserScreen({ navigation }) {
           <Picker
             selectedValue={picked}
             style={styles.picker}
-            onValueChange={(itemValue, itemIndex) =>
+            onValueChange={(itemValue, itemIndex) => {
               setPicked(itemValue)
+              console.log(" ): ",itemIndex)
+            }
             }>
             {pickerItems.map((v, i) => {
               return (
@@ -239,29 +258,62 @@ function AddUserScreen({ navigation }) {
               )
             })}
           </Picker>
-
         </View>
       )}
       {/* Choose Agency Container */}
 
-      {/* Agency Name Container */}
-      <View style={styles.inputGroup}>
-        <View style={{borderWidth:2}}>
-          <Text style={styles.label}>Add New</Text>
+      {
+        (showAgencyAdd) ? (
+          <View>
+            {/* Agency Name Container */}
+            < View style={styles.inputGroup}>
+              <View>
+                <Text style={styles.label}>Add New</Text>
 
-          <TextInput
-            style={styles.inputtxt}
-            placeholder={'Agency name'}
-            value={agency}
-            onChangeText={(val) => setAgency(val)}
-          />
-        </View>
-      </View>
-      {/* Agency Name Container */}
+                <TextInput
+                  style={styles.inputtxt}
+                  placeholder={'Agency name'}
+                  value={agency}
+                  onChangeText={(val) => setAgency(val)}
+                />
+              </View>
+            </View>
+            {/* Agency Name Container */}
 
-      <View>
-        <Text>dslaf;jklsadfj</Text>
-      </View>
+            {/* ---------------------------Add Button Container--------------------------- */}
+            <View style={styles.add_main_container}>
+              {/* Add Button Container */}
+              <TouchableOpacity
+                style={styles.container_button}
+                onPress={addAgency}
+              >
+                <View style={styles.IconContainer}>
+                  <Entypo name="add-to-list" size={23} style={{ lineHeight: 40 }} color="#60AD7F" />
+                </View>
+                <Text style={styles.add_button_txt}>Add Agency</Text>
+              </TouchableOpacity>
+              {/* Add Button Container */}
+            </View>
+            {/* ---------------------------Add Button Container--------------------------- */}
+          </View>
+        ) : (
+          <View style={styles.add_main_container}>
+            {/* Add Button Container */}
+            <TouchableOpacity
+              style={styles.container_button}
+              onPress={() => setShowAgencyAdd(true)}
+            >
+              <View style={styles.IconContainer}>
+                <AntDesign name="pluscircleo" size={23} style={{ lineHeight: 40 }} color="#60AD7F" />
+              </View>
+              <Text style={styles.save_button_txt}>Add Agency in List</Text>
+            </TouchableOpacity>
+            {/* Add Button Container */}
+          </View>
+        )
+      }
+
+
 
       {/* Brand Name Container */}
       <View style={styles.inputGroup}>
@@ -414,6 +466,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 40
   },
+  add_button_txt: {
+    fontSize: 16,
+    color: "#60AD7F",
+    width: "90%",
+    //borderWidth:1,
+    alignItems: "center",
+    textAlign: "center",
+    lineHeight: 40
+  },
+  add_main_container: {
+    marginTop: -25,
+    marginBottom: 10
+  },
   buttons_main_container: {
     paddingTop: 0
   },
@@ -438,7 +503,10 @@ const styles = StyleSheet.create({
     width: "100%",
     color: "black",
     zIndex: 1000,
-    marginTop: -12
+    marginTop: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: '#65a984',
+    backgroundColor: '#ededed',
   },
   label_txt: {
     fontSize: 16,
