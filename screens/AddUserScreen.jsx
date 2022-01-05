@@ -425,9 +425,9 @@ function AddUserScreen({ navigation }) {
       <View style={styles.ImageContainer}>
         {(imageUri) ?
           (
-            <Image source={{ uri: imageUri }} style={{ width: "40%", height: 300, borderRadius: 10 }} />
+            <Image source={{ uri: imageUri }} style={{ width: "95%", height: 200, borderRadius: 10 }} />
           ) : (
-            <Image source={alt} style={{ width: "40%", height: 300, borderRadius: 10 }} />
+            <Image source={alt} style={{ width: "90%", height: 200, borderRadius: 10 }} />
           )
         }
       </View>

@@ -77,7 +77,7 @@ function UserDetailScreen({ route }) {
             <Text style={styles.agency_txt}>{route.params.Agency}</Text>
           </View>
           <View>
-            <Text style={styles.agency_txt}>{route.params.userkey}</Text>
+            <Text style={styles.agency_txt}>{route.params.Count}</Text>
           </View>
         </View>
         <View>
