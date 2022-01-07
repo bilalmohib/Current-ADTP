@@ -106,6 +106,17 @@ function AddUserScreen({ navigation }) {
   const [addCount, setAddCount] = useState(false);
 
   useEffect(() => {
+    (async () => {
+      if (Platform.Os != "web") {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert("Sorry, we need camera permissions to make this work!");
+        }
+      }
+    })();
+  }, [])
+
+  useEffect(() => {
 
     if (pickedValue != '') {
       //For counting the number of times this Company has been choosen its count
