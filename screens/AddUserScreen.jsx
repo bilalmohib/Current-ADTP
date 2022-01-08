@@ -85,6 +85,10 @@ function AddUserScreen({ navigation }) {
 
   const [imageUri, setImageUri] = useState(null);
 
+  //When the uploading starts then it will be shown
+  const [uploading, setUploading] = useState(false);
+
+  const [download_url, setDownloadUrl] = useState(null);
 
   const device_name = Device.osName;
 
@@ -279,6 +283,54 @@ function AddUserScreen({ navigation }) {
     }
   }
 
+  const uploadImage = async () => {
+    if (imageUri != null) {
+      //React Native is unable to create a blob so we have to create it our self
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function () {
+          reject(new TypeError('Network request failed'));
+        };
+        xhr.responseType = 'blob';
+        xhr.open('GET', imageUri, true);
+        xhr.send(null);
+      });
+
+      const ref = firebase.storage().ref().child(new Date().toISOString())
+      const snapshot = ref.put(blob);
+
+      snapshot.on(firebase.storage.TaskEvent.STATE_CHANGED, () => {
+        setUploading(true);
+
+      },
+        (err) => {
+          setUploading(false);
+          console.log(err);
+          // blob.close();
+          return;
+        },
+        () => {
+          snapshot.snapshot.ref.getDownloadURL().then((url) => {
+            setUploading(false);
+            alert("Image Uploaded");
+            console.log("Download Url==> ", url);
+            setDownloadUrl(url);
+            //Close the blob for security reasons
+            // blob.close();
+            //Close the blob for security reasons
+            return url;
+          })
+        }
+      )
+    }
+    else {
+      alert("Please Choose an Image First");
+    }
+  }
+
   return (
     <ScrollView style={styles.container}>
 
@@ -429,11 +481,21 @@ function AddUserScreen({ navigation }) {
       <ProgressBar style={{ marginTop: 10, marginBottom: 20, borderRadius: 10, width: "100%", height: 15 }} progress={0.5} color="#7db597" />
 
       <View style={styles.ImageContainer}>
-        {(imageUri) ?
+        {(imageUri == null) ?
           (
-            <Image source={{ uri: imageUri }} style={{ width: "95%", height: 200, borderRadius: 10 }} />
+            <Image source={alt} style={{ width: "95%", height: 200, borderRadius: 10 }} />
           ) : (
-            <Image source={alt} style={{ width: "90%", height: 200, borderRadius: 10 }} />
+            (download_url == null) ? (
+              <View>
+                <Text style={{ color: "#f0ad4e" }}>The Image Preview is Local</Text>
+                <Image source={{ uri: imageUri }} style={{ width: "90%", height: 200, borderRadius: 10 }} />
+              </View>
+            ) : (
+              <View>
+                <Text style={{ color: "#5cb85c" }}>The Image Preview is From Cloud</Text>
+                <Image source={{ uri: download_url }} style={{ width: "90%", height: 200, borderRadius: 10 }} />
+              </View>
+            )
           )
         }
       </View>
@@ -465,6 +527,21 @@ function AddUserScreen({ navigation }) {
         {/* Delete Button Container */}
       </View>
       {/* ---------------------------Main Button Container--------------------------- */}
+
+      {(imageUri == null) ? (
+        <View>
+          <Text>Please Choose an Image to Upload it to Cloud</Text>
+        </View>
+      ) : (
+        (uploading) ? (
+          <View>
+            <ActivityIndicator size="large" color="#000" />
+            <Button disabled={true} title='Upload' onPress={uploadImage} />
+          </View>
+        ) : (
+          <Button title='Upload' onPress={uploadImage} />
+        )
+      )}
 
     </ScrollView >
   );
