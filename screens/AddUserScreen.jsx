@@ -72,6 +72,10 @@ let picker_Items = [
   {
     label: "Company 10",
     value: 10
+  },
+  {
+    label: "Other",
+    value: 11
   }
 ]
 
@@ -152,6 +156,9 @@ function AddUserScreen({ navigation }) {
     for (let i = 0; i < pickerItems.length; i++) {
       if (pickerItems[i].value == picked) {
         //console.log("The Picked item label is ==> ", pickerItems[i].label);
+        if (pickerItems[i].label == "Other") {
+          
+        }
         setPickedValue(pickerItems[i].label);
       }
     }
@@ -208,6 +215,7 @@ function AddUserScreen({ navigation }) {
 
     if (!result.cancelled) {
       setImageUri(result.uri);
+      setDownloadUrl(null);
       // Data URL string
       // const message4 = result.uri;
       // uploadString(storageRef, message4, 'data_url').then((snapshot) => {
@@ -219,6 +227,9 @@ function AddUserScreen({ navigation }) {
       // });
 
     }
+
+    //Code to upload
+
   };
 
   const addAgency = () => {
@@ -284,51 +295,7 @@ function AddUserScreen({ navigation }) {
   }
 
   const uploadImage = async () => {
-    if (imageUri != null) {
-      //React Native is unable to create a blob so we have to create it our self
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-          resolve(xhr.response);
-        };
-        xhr.onerror = function () {
-          reject(new TypeError('Network request failed'));
-        };
-        xhr.responseType = 'blob';
-        xhr.open('GET', imageUri, true);
-        xhr.send(null);
-      });
 
-      const ref = firebase.storage().ref().child(new Date().toISOString())
-      const snapshot = ref.put(blob);
-
-      snapshot.on(firebase.storage.TaskEvent.STATE_CHANGED, () => {
-        setUploading(true);
-
-      },
-        (err) => {
-          setUploading(false);
-          console.log(err);
-          // blob.close();
-          return;
-        },
-        () => {
-          snapshot.snapshot.ref.getDownloadURL().then((url) => {
-            setUploading(false);
-            alert("Image Uploaded");
-            console.log("Download Url==> ", url);
-            setDownloadUrl(url);
-            //Close the blob for security reasons
-            // blob.close();
-            //Close the blob for security reasons
-            return url;
-          })
-        }
-      )
-    }
-    else {
-      alert("Please Choose an Image First");
-    }
   }
 
   return (
@@ -366,7 +333,6 @@ function AddUserScreen({ navigation }) {
         </View>
       ) : (
         <View style={styles.inputGroupTop}>
-
           <Text style={styles.labelTop}>Agency name</Text>
           <Picker
             selectedValue={picked}
@@ -422,19 +388,7 @@ function AddUserScreen({ navigation }) {
             {/* ---------------------------Add Button Container--------------------------- */}
           </View>
         ) : (
-          <View style={styles.add_main_container}>
-            {/* Add Button Container */}
-            <TouchableOpacity
-              style={styles.container_button}
-              onPress={() => setShowAgencyAdd(true)}
-            >
-              <View style={styles.IconContainer}>
-                <AntDesign name="pluscircleo" size={23} style={{ lineHeight: 40 }} color="#60AD7F" />
-              </View>
-              <Text style={styles.save_button_txt}>Add Agency in List</Text>
-            </TouchableOpacity>
-            {/* Add Button Container */}
-          </View>
+          <></>
         )
       }
 
