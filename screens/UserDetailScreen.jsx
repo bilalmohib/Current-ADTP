@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Alert, Button, StyleSheet, TextInput, ScrollView, ActivityIndicator, View, Image, Text, TouchableOpacity } from 'react-native';
 //Importing Vector Icon
 import { Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 //Importing Image
 import img from "../assets/User_details.png";
 import firebase from '../database/firebaseDb';
@@ -100,12 +101,46 @@ function UserDetailScreen({ route }) {
           </View>
           <Text style={styles.edit_txt}>EDIT</Text>
         </TouchableOpacity>
+
+        {/* Delete Button Container */}
+        <TouchableOpacity
+          style={styles.container_button}
+          onPress={() => alert('Delete Button Pressed')}
+        >
+          <View style={styles.IconContainer}>
+            <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#000000" />
+          </View>
+          <Text style={styles.delete_button_txt}>DELETE</Text>
+        </TouchableOpacity>
+        {/* Delete Button Container */}
+
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  delete_button_txt: {
+    fontSize: 14,
+    color: "#000000",
+    width: "90%",
+    //borderWidth:1,
+    alignItems: "center",
+    textAlign: "center",
+    lineHeight: 40
+  },
+  container_button: {
+    marginTop: 20,
+    borderColor: "rgba(0, 0, 0, 0.12)",
+    justifyContent: "flex-start",
+    borderWidth: 1,
+    height: 50,
+    width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.87)",
+    borderRadius: 4,
+    flex: 1,
+    flexDirection: "row"
+  },
   tinyLogo: {
     width: "100%",
     height: 273
