@@ -162,8 +162,7 @@ function AddUserScreen({ navigation }) {
         if (pickerItems[i].label == "Other") {
           setShowAgencyAdd(true);
         }
-        else
-        {
+        else {
           setShowAgencyAdd(false);
         }
         setPickedValue(pickerItems[i].label);
@@ -174,33 +173,31 @@ function AddUserScreen({ navigation }) {
 
     // console.log("Data from firestore equals ==> ", firestoreData);
 
-    //Retrieving the data from firestore for purpose of counter 
-    if (true) {
-      const db = firebase.firestore();
-      db.collection(`agencies`)
-        .get()
-        .then(snapshot => {
-          let data = [];
-          snapshot.forEach(element => {
-            data.push(Object.assign({
-              id: element.id,
-              "Agency": element.Agency,
-              "Brand": element.Brand,
-              "Representative_name": element.Representative_name,
-              "Image": element.Image,
-            }, element.data()))
-          })
-          // console.log("data=> ", data)
-
-          if (firestoreData.length != data.length) {
-            setFirestoreData(data);
-            // console.log("Updated")
-          }
-        }).catch(err => {
-          console.log("Firebase data error ==> ", err)
+    ///////////////////////////////////Retrieving the data from firestore for purpose of counter///////////////////////
+    const db = firebase.firestore();
+    db.collection(`agencies`)
+      .get()
+      .then(snapshot => {
+        let data = [];
+        snapshot.forEach(element => {
+          data.push(Object.assign({
+            id: element.id,
+            "Agency": element.Agency,
+            "Brand": element.Brand,
+            "Representative_name": element.Representative_name,
+            "Image": element.Image,
+          }, element.data()))
         })
-    }
-    //
+        // console.log("data=> ", data)
+
+        if (firestoreData.length != data.length) {
+          setFirestoreData(data);
+          // console.log("Updated")
+        }
+      }).catch(err => {
+        console.log("Firebase data error ==> ", err)
+      })
+    ///////////////////////////////////Retrieving the data from firestore for purpose of counter///////////////////////
 
   })
 
@@ -341,7 +338,7 @@ function AddUserScreen({ navigation }) {
         ]
       );
       setShowAgencyAdd(false);
-      setPicked(length+1);
+      setPicked(length + 1);
       alert("Agency Added");
     }
     else {

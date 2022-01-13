@@ -10,6 +10,12 @@ import firebase from '../database/firebaseDb';
 function UserDetailScreen({ route }) {
   const [loading, setLoading] = useState(false);
 
+  //For storing retrieved data
+  const [firestoreData, setFirestoreData] = useState([]);
+
+  //For storing brands list of data produced by the same monster
+  const [listOfBrands,setListOfBrands] = useState([]);
+
   useEffect(() => {
     if (loading) {
       return (
@@ -18,6 +24,54 @@ function UserDetailScreen({ route }) {
         </View>
       )
     }
+
+    console.log("Data from firestore in user details screen equals ==> ", firestoreData);
+
+    let length = firestoreData.length;
+
+    if (length != 0) {
+      let tempArray = [];
+      for (let i = 0; i < length; i++) {
+        //To know if the same moster i.e with agency has produced some other brands check the condition 
+        if (firestoreData[i].Agency == route.params.Agency) {
+           tempArray.push(firestoreData[i]);
+        }
+      }
+      //If length of local array is not equal to length of global array then set the new data array
+      if(listOfBrands.length!=tempArray.length)
+      {
+        setListOfBrands(tempArray);
+      }
+      console.warn("Temp Array at user detail screen equals ==> ",listOfBrands);
+    }
+
+    ///////////////////////////////////Retrieving the data from firestore for purpose of counter///////////////////////
+    const db = firebase.firestore();
+    db.collection(`agencies`)
+      .get()
+      .then(snapshot => {
+        let data = [];
+        snapshot.forEach(element => {
+          data.push(Object.assign({
+            id: element.id,
+            "Agency": element.Agency,
+            "Brand": element.Brand,
+            "Representative_name": element.Representative_name,
+            "Image": element.Image,
+          }, element.data()))
+        })
+        // console.log("data=> ", data)
+
+        if (firestoreData.length != data.length) {
+          setFirestoreData(data);
+          // console.log("Updated")
+        }
+      }).catch(err => {
+        console.log("Firebase data error ==> ", err)
+      })
+    ///////////////////////////////////Retrieving the data from firestore for purpose of counter///////////////////////
+
+
   })
 
   const updateUser = () => {
@@ -87,9 +141,9 @@ function UserDetailScreen({ route }) {
           <Text style={styles.txt_description}>The same monster also produced</Text>
         </View>
         <View>
-          {["Brand name", "Brand name", "Brand name"].map((v, i) => (
+          {listOfBrands.map((v, i) => (
             <View key={i}>
-              <Text style={styles.brand_txt}>{v}</Text>
+              <Text style={styles.brand_txt}>{v.Brand}</Text>
             </View>
           ))}
         </View>
