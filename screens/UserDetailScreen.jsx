@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Button, StyleSheet, TextInput, ScrollView, ActivityIndicator, View, Image, Text, TouchableOpacity } from 'react-native';
+import { Alert, Button, StyleSheet, TextInput, ScrollView, ActivityIndicator, View, Image, Text, TouchableOpacity, Platform } from 'react-native';
 //Importing Vector Icon
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 //Importing Image
-import img from "../assets/User_details.png";
+// import img from "../assets/User_details.png";
+//Importing Device API to check the device type to render different content for android and ios
+import * as Device from 'expo-device';
+//Importing Device API to check the device type to render different content for android and ios
 import firebase from '../database/firebaseDb';
 
 function UserDetailScreen({ route }) {
@@ -14,7 +17,9 @@ function UserDetailScreen({ route }) {
   const [firestoreData, setFirestoreData] = useState([]);
 
   //For storing brands list of data produced by the same monster
-  const [listOfBrands,setListOfBrands] = useState([]);
+  const [listOfBrands, setListOfBrands] = useState([]);
+
+  const device_name = Device.osName;
 
   useEffect(() => {
     if (loading) {
@@ -27,6 +32,8 @@ function UserDetailScreen({ route }) {
 
     console.log("Data from firestore in user details screen equals ==> ", firestoreData);
 
+    console.warn("The device name is equal to ==> ",Platform.OS)
+
     let length = firestoreData.length;
 
     if (length != 0) {
@@ -34,15 +41,14 @@ function UserDetailScreen({ route }) {
       for (let i = 0; i < length; i++) {
         //To know if the same moster i.e with agency has produced some other brands check the condition 
         if (firestoreData[i].Agency == route.params.Agency) {
-           tempArray.push(firestoreData[i]);
+          tempArray.push(firestoreData[i]);
         }
       }
       //If length of local array is not equal to length of global array then set the new data array
-      if(listOfBrands.length!=tempArray.length)
-      {
+      if (listOfBrands.length != tempArray.length) {
         setListOfBrands(tempArray);
       }
-      console.warn("Temp Array at user detail screen equals ==> ",listOfBrands);
+      console.warn("Temp Array at user detail screen equals ==> ", listOfBrands);
     }
 
     ///////////////////////////////////Retrieving the data from firestore for purpose of counter///////////////////////
@@ -107,19 +113,28 @@ function UserDetailScreen({ route }) {
     //   })
   }
 
-  const openTwoButtonAlert = () => {
-    Alert.alert(
-      'Delete User',
-      'Are you sure?',
-      [
-        { text: 'Yes', onPress: () => this.deleteUser() },
-        { text: 'No', onPress: () => console.log('No item was removed'), style: 'cancel' },
-      ],
-      {
-        cancelable: true
+  const deleteRecord = () => {
+    if (Platform.OS != "web") {
+      Alert.alert(
+        'Delete User',
+        'Are you sure?',
+        [
+          { text: 'Yes', onPress: () => alert("Delete button pressed") },
+          { text: 'No', onPress: () => console.log('No item was removed'), style: 'cancel' },
+        ],
+        {
+          cancelable: true
+        }
+      );
+    }
+    else {
+      let return_value = confirm("Are you want to delete?");
+      if (return_value) {
+        alert("Ok I will delete")
       }
-    );
+    }
   }
+
   return (
     <ScrollView>
 
@@ -160,7 +175,7 @@ function UserDetailScreen({ route }) {
         {/* Delete Button Container */}
         <TouchableOpacity
           style={styles.container_button}
-          onPress={() => alert('Delete Button Pressed')}
+          onPress={deleteRecord}
         >
           <View style={styles.IconContainer}>
             <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#000000" />

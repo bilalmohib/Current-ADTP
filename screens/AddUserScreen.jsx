@@ -118,7 +118,7 @@ function AddUserScreen({ navigation }) {
 
   useEffect(() => {
     (async () => {
-      if (Platform.Os != "web") {
+      if (Platform.OS != "web") {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
           alert("Sorry, we need camera permissions to make this work!");
