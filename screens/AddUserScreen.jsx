@@ -83,6 +83,8 @@ function AddUserScreen({ navigation }) {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [progress, setProgress] = useState(0);
+
   const [pickerItems, setPickerItems] = useState(picker_Items);
 
   const [visibility, setVisibility] = useState(false);
@@ -157,7 +159,7 @@ function AddUserScreen({ navigation }) {
       if (pickerItems[i].value == picked) {
         //console.log("The Picked item label is ==> ", pickerItems[i].label);
         if (pickerItems[i].label == "Other") {
-          
+
         }
         setPickedValue(pickerItems[i].label);
       }
@@ -214,8 +216,96 @@ function AddUserScreen({ navigation }) {
     // const storageRef = ref(storage, 'some-child');
 
     if (!result.cancelled) {
+
+      //Code to upload
+      if (result.uri != null) {
+        //React Native is unable to create a blob so we have to create it our self
+        const blob = await new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.onload = function () {
+            resolve(xhr.response);
+          };
+          xhr.onerror = function () {
+            reject(new TypeError('Network request failed'));
+          };
+          xhr.responseType = 'blob';
+          xhr.open('GET', result.uri, true);
+          xhr.send(null);
+        });
+
+        const ref = firebase.storage().ref().child(new Date().toISOString())
+        const snapshotGlobal = ref.put(blob);
+
+        // Register three observers:
+        // 1. 'state_changed' observer, called any time the state changes
+        // 2. Error observer, called on failure
+        // 3. Completion observer, called on successful completion
+        snapshotGlobal.on('state_changed',
+          (snapshot) => {
+            setUploading(true);
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            let local_progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            //local_progress = parseInt(local_progress)
+            setProgress(local_progress);
+            console.log('Upload is ' + local_progress + '% done');
+            switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+              case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Upload is running');
+                break;
+            }
+          },
+          (error) => {
+            // Handle unsuccessful uploads
+          },
+          () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            snapshotGlobal.snapshot.ref.getDownloadURL().then((durl) => {
+              console.log('File available at', durl);
+              setUploading(false);
+              alert("Image Uploaded");
+              setDownloadUrl(durl);
+            });
+          }
+        );
+
+
+        // snapshot.on(firebase.storage.TaskEvent.STATE_CHANGED, () => {
+        //   setUploading(true);
+
+        // },
+        //   (err) => {
+        //     setUploading(false);
+        //     console.log(err);
+        //     // blob.close();
+        //     return;
+        //   },
+        //   () => {
+        //     snapshot.snapshot.ref.getDownloadURL().then((url) => {
+        //       setUploading(false);
+        //       alert("Image Uploaded");
+        //       console.log("Download Url==> ", url);
+        //       setDownloadUrl(url);
+        //       //Close the blob for security reasons
+        //       // blob.close();
+        //       //Close the blob for security reasons
+        //       return url;
+        //     })
+        //   }
+        // )
+      }
+
       setImageUri(result.uri);
-      setDownloadUrl(null);
+
+      // else {
+      //   alert("Please Choose an Image First");
+      // }
+
+      //setDownloadUrl(null);
       // Data URL string
       // const message4 = result.uri;
       // uploadString(storageRef, message4, 'data_url').then((snapshot) => {
@@ -227,9 +317,6 @@ function AddUserScreen({ navigation }) {
       // });
 
     }
-
-    //Code to upload
-
   };
 
   const addAgency = () => {
@@ -257,7 +344,7 @@ function AddUserScreen({ navigation }) {
   }
 
   const storeUser = () => {
-    if (pickedValue === '' || brand === '' || representative_name === '' || imageUri === '') {
+    if (pickedValue === '' || brand === '' || representative_name === '' || download_url === null) {
       alert('Fill all the fields!');
     } else {
       setIsLoading(true);
@@ -268,7 +355,7 @@ function AddUserScreen({ navigation }) {
         // Agency: agency,
         Brand: brand,
         Representative_name: representative_name,
-        Image: "imageUri",
+        Image: download_url,
         Count: count
       }).then((res) => {
         // setAgency('');
@@ -281,6 +368,7 @@ function AddUserScreen({ navigation }) {
         set_selected_brand_count(0);
         setIsLoading(false);
         setImageUri('');
+        setDownloadUrl(null);
         //alert("You should now navigate to the listing screen because you've added the item")
         //props.navigation.navigate('UserScreen')
         //navigate('UserScreen')
@@ -295,7 +383,51 @@ function AddUserScreen({ navigation }) {
   }
 
   const uploadImage = async () => {
+    if (imageUri != null) {
+      //React Native is unable to create a blob so we have to create it our self
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function () {
+          reject(new TypeError('Network request failed'));
+        };
+        xhr.responseType = 'blob';
+        xhr.open('GET', imageUri, true);
+        xhr.send(null);
+      });
 
+      const ref = firebase.storage().ref().child(new Date().toISOString())
+      const snapshot = ref.put(blob);
+
+      snapshot.on(firebase.storage.TaskEvent.STATE_CHANGED, () => {
+        setUploading(true);
+
+      },
+        (err) => {
+          setUploading(false);
+          console.log(err);
+          // blob.close();
+          return;
+        },
+        () => {
+          snapshot.snapshot.ref.getDownloadURL().then((url) => {
+            setUploading(false);
+            alert("Image Uploaded");
+            console.log("Download Url==> ", url);
+            setDownloadUrl(url);
+            //Close the blob for security reasons
+            // blob.close();
+            //Close the blob for security reasons
+            return url;
+          })
+        }
+      )
+    }
+    else {
+      alert("Please Choose an Image First");
+    }
   }
 
   return (
@@ -432,7 +564,7 @@ function AddUserScreen({ navigation }) {
       </View>
       {/* Image Container */}
 
-      <ProgressBar style={{ marginTop: 10, marginBottom: 20, borderRadius: 10, width: "100%", height: 15 }} progress={0.5} color="#7db597" />
+      <ProgressBar style={{ marginTop: 10, marginBottom: 20, borderRadius: 10, width: "100%", height: 15 }} progress={progress} color="#14a800" />
 
       <View style={styles.ImageContainer}>
         {(imageUri == null) ?
@@ -442,12 +574,12 @@ function AddUserScreen({ navigation }) {
             (download_url == null) ? (
               <View>
                 <Text style={{ color: "#f0ad4e" }}>The Image Preview is Local</Text>
-                <Image source={{ uri: imageUri }} style={{ width: "90%", height: 200, borderRadius: 10 }} />
+                <Image source={{ uri: imageUri }} style={styles.imagePreview} />
               </View>
             ) : (
               <View>
                 <Text style={{ color: "#5cb85c" }}>The Image Preview is From Cloud</Text>
-                <Image source={{ uri: download_url }} style={{ width: "90%", height: 200, borderRadius: 10 }} />
+                <Image source={{ uri: download_url }} style={styles.imagePreview} />
               </View>
             )
           )
@@ -469,7 +601,7 @@ function AddUserScreen({ navigation }) {
         {/* Save Button Container */}
 
         {/* Delete Button Container */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.container_button}
           onPress={() => alert('Delete Button Pressed')}
         >
@@ -477,12 +609,12 @@ function AddUserScreen({ navigation }) {
             <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#000000" />
           </View>
           <Text style={styles.delete_button_txt}>DELETE</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {/* Delete Button Container */}
       </View>
       {/* ---------------------------Main Button Container--------------------------- */}
 
-      {(imageUri == null) ? (
+      {/* {(imageUri == null) ? (
         <View>
           <Text>Please Choose an Image to Upload it to Cloud</Text>
         </View>
@@ -495,13 +627,19 @@ function AddUserScreen({ navigation }) {
         ) : (
           <Button title='Upload' onPress={uploadImage} />
         )
-      )}
+      )} */}
 
     </ScrollView >
   );
 }
 
 const styles = StyleSheet.create({
+  imagePreview: {
+    width: "100%", 
+    height: 200, 
+    marginTop:20,
+    borderRadius: 10
+  },
   ImageContainer: {
     alignItems: "center"
 

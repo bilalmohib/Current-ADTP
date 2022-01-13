@@ -68,9 +68,10 @@ function UserDetailScreen({ route }) {
   }
   return (
     <ScrollView>
+
       <Image
         style={styles.tinyLogo}
-        source={img}
+        source={route.params.Image}
       />
       <View style={styles.container}>
         <View style={styles.agency_name_container}>
