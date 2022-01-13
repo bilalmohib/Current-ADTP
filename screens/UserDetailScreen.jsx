@@ -10,7 +10,7 @@ import * as Device from 'expo-device';
 //Importing Device API to check the device type to render different content for android and ios
 import firebase from '../database/firebaseDb';
 
-function UserDetailScreen({ route }) {
+function UserDetailScreen({ route, navigation }) {
   const [loading, setLoading] = useState(false);
 
   //For storing retrieved data
@@ -32,7 +32,7 @@ function UserDetailScreen({ route }) {
 
     console.log("Data from firestore in user details screen equals ==> ", firestoreData);
 
-    console.warn("The device name is equal to ==> ",Platform.OS)
+    console.warn("The device name is equal to ==> ", Platform.OS)
 
     let length = firestoreData.length;
 
@@ -106,11 +106,7 @@ function UserDetailScreen({ route }) {
   }
 
   const deleteUser = () => {
-    // const dbRef = firebase.firestore().collection('agencies').doc(this.props.route.params.userkey)
-    //   dbRef.delete().then((res) => {
-    //       console.log('Item removed from database')
-    //       this.props.navigation.navigate('UserScreen');
-    //   })
+
   }
 
   const deleteRecord = () => {
@@ -130,14 +126,19 @@ function UserDetailScreen({ route }) {
     else {
       let return_value = confirm("Are you want to delete?");
       if (return_value) {
-        alert("Ok I will delete")
+        //alert("Ok I will delete")
+        const dbRef = firebase.firestore().collection('agencies').doc(route.params.userkey)
+        dbRef.delete().then((res) => {
+          console.log('Item removed from database')
+          navigation.push('UserScreen');
+          // setTimeout(() => {  }, 2000);
+        })
       }
     }
   }
 
   return (
     <ScrollView>
-
       <Image
         style={styles.tinyLogo}
         source={route.params.Image}
@@ -183,7 +184,6 @@ function UserDetailScreen({ route }) {
           <Text style={styles.delete_button_txt}>DELETE</Text>
         </TouchableOpacity>
         {/* Delete Button Container */}
-
       </View>
     </ScrollView>
   );
