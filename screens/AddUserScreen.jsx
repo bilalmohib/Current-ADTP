@@ -113,6 +113,7 @@ function AddUserScreen({ navigation }) {
 
   //Show Agency Add
   const [showAgencyAdd, setShowAgencyAdd] = useState(false);
+
   const [addCount, setAddCount] = useState(false);
 
   useEffect(() => {
@@ -159,7 +160,11 @@ function AddUserScreen({ navigation }) {
       if (pickerItems[i].value == picked) {
         //console.log("The Picked item label is ==> ", pickerItems[i].label);
         if (pickerItems[i].label == "Other") {
-
+          setShowAgencyAdd(true);
+        }
+        else
+        {
+          setShowAgencyAdd(false);
         }
         setPickedValue(pickerItems[i].label);
       }
@@ -336,6 +341,7 @@ function AddUserScreen({ navigation }) {
         ]
       );
       setShowAgencyAdd(false);
+      setPicked(length+1);
       alert("Agency Added");
     }
     else {
@@ -635,9 +641,9 @@ function AddUserScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   imagePreview: {
-    width: "100%", 
-    height: 200, 
-    marginTop:20,
+    width: "100%",
+    height: 200,
+    marginTop: 20,
     borderRadius: 10
   },
   ImageContainer: {
