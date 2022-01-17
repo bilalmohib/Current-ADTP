@@ -119,7 +119,7 @@ class UserScreen extends Component {
                   </Text>
                 </View>
                 <View>
-                  <Text style={styles.agency_txt1}>
+                  <Text style={styles.agency_txt3}>
                     {item.Count}
                   </Text>
                 </View>
@@ -148,6 +148,11 @@ const styles = StyleSheet.create({
   agency_txt2: {
     paddingTop: 10,
     fontSize: 14,
+    color: "rgba(0, 0, 0, 0.87)"
+  },
+  agency_txt3: {
+    paddingRight:100,
+    fontSize: 20,
     color: "rgba(0, 0, 0, 0.87)"
   },
   container: {

@@ -23,7 +23,7 @@ function MyStack() {
       <Stack.Screen
         name="UserScreen"
         component={UserScreen}
-        options={{ title: 'Agency List' }}
+        options={{ title: 'Repeat Offenders' }}
       />
       <Stack.Screen
         name="AddUserScreen"

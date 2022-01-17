@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Button, StyleSheet, TextInput, ScrollView, ActivityIndicator, View, Image, Text, TouchableOpacity, Platform } from 'react-native';
+import { Alert, Button, StyleSheet, ScrollView, ActivityIndicator, View, Image, Text, TouchableOpacity, Platform } from 'react-native';
 //Importing Vector Icon
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 //Importing Image
 // import img from "../assets/User_details.png";
 //Importing Device API to check the device type to render different content for android and ios
-import * as Device from 'expo-device';
+// import * as Device from 'expo-device';
 //Importing Device API to check the device type to render different content for android and ios
 import firebase from '../database/firebaseDb';
 
@@ -19,7 +19,7 @@ function UserDetailScreen({ route, navigation }) {
   //For storing brands list of data produced by the same monster
   const [listOfBrands, setListOfBrands] = useState([]);
 
-  const device_name = Device.osName;
+  // const device_name = Device.osName;
 
   useEffect(() => {
     if (loading) {
@@ -80,34 +80,30 @@ function UserDetailScreen({ route, navigation }) {
 
   })
 
-  const updateUser = () => {
-    this.setState({
-      isLoading: true,
-    });
-    const updateDBRef = firebase.firestore().collection('agencies').doc(this.state.key);
-    updateDBRef.set({
-      agency: this.state.agency,
-      repName: this.state.repName,
-    }).then((docRef) => {
-      this.setState({
-        key: '',
-        agency: '',
-        repName: '',
-        isLoading: false,
-      });
-      this.props.navigation.navigate('UserScreen');
-    })
-      .catch((error) => {
-        console.error("Error: ", error);
-        this.setState({
-          isLoading: false,
-        });
-      });
-  }
-
-  const deleteUser = () => {
-
-  }
+  // const updateUser = () => {
+  //   this.setState({
+  //     isLoading: true,
+  //   });
+  //   const updateDBRef = firebase.firestore().collection('agencies').doc(this.state.key);
+  //   updateDBRef.set({
+  //     agency: this.state.agency,
+  //     repName: this.state.repName,
+  //   }).then((docRef) => {
+  //     this.setState({
+  //       key: '',
+  //       agency: '',
+  //       repName: '',
+  //       isLoading: false,
+  //     });
+  //     this.props.navigation.navigate('UserScreen');
+  //   })
+  //     .catch((error) => {
+  //       console.error("Error: ", error);
+  //       this.setState({
+  //         isLoading: false,
+  //       });
+  //     });
+  // }
 
   const deleteRecord = () => {
     if (Platform.OS != "web") {
