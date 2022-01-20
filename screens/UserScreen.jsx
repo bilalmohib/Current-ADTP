@@ -23,10 +23,27 @@ class UserScreen extends Component {
 
   componentDidMount() {
     this.unsubscribe = this.firestoreRef.onSnapshot(this.getCollection);
+    this.checkIfLoggedIn();
   }
 
   componentWillUnmount() {
     this.unsubscribe();
+  }
+
+  checkIfLoggedIn = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        var uid = user.uid;
+        console.log("User is Logged In")
+        // ...
+      } else {
+        // User is signed out
+        // ...
+        console.log("User is Not Logged In")
+      }
+    });
   }
 
   // useEffect(() => {
@@ -105,7 +122,7 @@ class UserScreen extends Component {
                     Representative_name: item.Representative_name,
                     Brand: item.Brand,
                     Image: item.Image,
-                    Count:item.Count
+                    Count: item.Count
                   });
                 }}
                 key={i}
@@ -151,7 +168,7 @@ const styles = StyleSheet.create({
     color: "rgba(0, 0, 0, 0.87)"
   },
   agency_txt3: {
-    paddingRight:100,
+    paddingRight: 100,
     fontSize: 20,
     color: "rgba(0, 0, 0, 0.87)"
   },
