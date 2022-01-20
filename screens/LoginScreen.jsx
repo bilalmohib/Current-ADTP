@@ -8,25 +8,50 @@ import { Ionicons } from '@expo/vector-icons';
 //Importing the icon family
 import firebase from '../database/firebaseDb';
 
-const LoginScreen = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [userArr, setUserArr] = useState([])
+const LoginScreen = ({ navigation }) => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [signedInUserData, setSignedInUserData] = useState([])
 
     useEffect(() => {
-        firebase.firestore().collection('agencies').onSnapshot(getCollection);
-        if (isLoading) {
-            return (
-                <View style={styles.preloader}>
-                    <ActivityIndicator size="large" color="#9E9E9E" />
-                </View>
-            )
-        }
-    })
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                var uid = user.uid;
+                setSignedInUserData(user);
+                setIsLoggedIn(true);
+                console.log("User is Logged In")
+                // ...
+            } else {
+                // User is signed out
+                // ...
+                setIsLoggedIn(false);
+                console.log("User is Not Logged In")
+                navigation.navigate('LoginScreen')
+            }
+        });
+    }, [])
 
     return (
-        <ScrollView style={styles.container} >
+        <>
+            {
+                (isLoggedIn) ? (
+                    <ScrollView style={styles.container}>
+                        <Text>Is Logged In</Text>
+                    </ScrollView>
+                ) : (
+                    <ScrollView style={styles.container}>
+                        <Text>Is Not Logged In</Text>
+                        <TouchableOpacity onPress={()=>alert("Lets Login Now")}>
+                            <Text>
+                                Login Now
+                            </Text>
+                        </TouchableOpacity>
+                    </ScrollView>
+                )
+            }
 
-        </ScrollView >
+        </>
     );
 }
 const styles = StyleSheet.create({

@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AddUserScreen from './screens/AddUserScreen';
 import UserScreen from './screens/UserScreen';
 import UserDetailScreen from './screens/UserDetailScreen';
+import LoginScreen from './screens/LoginScreen';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,11 @@ function MyStack() {
         name="UserDetailScreen"
         component={UserDetailScreen}
         options={{ title: 'Agency Detail' }}
+      />
+       <Stack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{ title: 'Login' }}
       />
     </Stack.Navigator>
   );
