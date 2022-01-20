@@ -20,17 +20,45 @@ const LoginScreen = ({ navigation }) => {
                 var uid = user.uid;
                 setSignedInUserData(user);
                 setIsLoggedIn(true);
-                console.log("User is Logged In")
+                console.log("User is Logged In" + signedInUserData)
+                navigation.navigate('UserScreen')
                 // ...
             } else {
                 // User is signed out
                 // ...
                 setIsLoggedIn(false);
                 console.log("User is Not Logged In")
-                navigation.navigate('LoginScreen')
+                
             }
         });
     }, [])
+
+    const googleSignIn = () => {
+        var provider = new firebase.auth.GoogleAuthProvider();
+
+        firebase.auth()
+            .signInWithPopup(provider)
+            .then((result) => {
+                /** @type {firebase.auth.OAuthCredential} */
+                var credential = result.credential;
+
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                var token = credential.accessToken;
+                // The signed-in user info.
+                var user = result.user;
+                // ...
+            }).catch((error) => {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var credential = error.credential;
+                // ...
+            });
+
+    }
 
     return (
         <>
@@ -38,11 +66,12 @@ const LoginScreen = ({ navigation }) => {
                 (isLoggedIn) ? (
                     <ScrollView style={styles.container}>
                         <Text>Is Logged In</Text>
+                        <Text>User name is : {signedInUserData.displayName}</Text>
                     </ScrollView>
                 ) : (
                     <ScrollView style={styles.container}>
                         <Text>Is Not Logged In</Text>
-                        <TouchableOpacity onPress={()=>alert("Lets Login Now")}>
+                        <TouchableOpacity onPress={googleSignIn}>
                             <Text>
                                 Login Now
                             </Text>
