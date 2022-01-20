@@ -36,12 +36,16 @@ class UserScreen extends Component {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         var uid = user.uid;
+
+        
+
         console.log("User is Logged In")
         // ...
       } else {
         // User is signed out
         // ...
         console.log("User is Not Logged In")
+        this.props.navigation.navigate('LoginScreen')
       }
     });
   }
