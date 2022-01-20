@@ -13,6 +13,9 @@ import firebase from '../database/firebaseDb';
 function UserDetailScreen({ route, navigation }) {
   const [loading, setLoading] = useState(false);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [signedInUserData, setSignedInUserData] = useState([])
+
   //For storing retrieved data
   const [firestoreData, setFirestoreData] = useState([]);
 
@@ -20,6 +23,28 @@ function UserDetailScreen({ route, navigation }) {
   const [listOfBrands, setListOfBrands] = useState([]);
 
   // const device_name = Device.osName;
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        var uid = user.uid;
+
+        setIsLoggedIn(true);
+        setSignedInUserData(user)
+
+        console.log("User is Logged In" + user)
+        // ...
+      } else {
+        // User is signed out
+        // ...
+        setIsLoggedIn(false);
+        console.log("User is Not Logged In")
+        this.props.navigation.navigate('LoginScreen')
+      }
+    });
+  }, [])
 
   useEffect(() => {
     if (loading) {
@@ -134,54 +159,62 @@ function UserDetailScreen({ route, navigation }) {
   }
 
   return (
-    <ScrollView>
-      <Image
-        style={styles.tinyLogo}
-        source={route.params.Image}
-      />
-      <View style={styles.container}>
-        <View style={styles.agency_name_container}>
-          <View style={styles.halfWidth}>
-            <Text style={styles.agency_txt}>{route.params.Agency}</Text>
-          </View>
-          <View>
-            <Text style={styles.agency_txt}>{route.params.Count}</Text>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.representative_txt}>{route.params.Representative_name}</Text>
-          <Text style={styles.txt_description}>The same monster also produced</Text>
-        </View>
-        <View>
-          {listOfBrands.map((v, i) => (
-            <View key={i}>
-              <Text style={styles.brand_txt}>{v.Brand}</Text>
+    <>
+      {(isLoggedIn) ? (
+        <ScrollView>
+          <Image
+            style={styles.tinyLogo}
+            source={route.params.Image}
+          />
+          <View style={styles.container}>
+            <View style={styles.agency_name_container}>
+              <View style={styles.halfWidth}>
+                <Text style={styles.agency_txt}>{route.params.Agency}</Text>
+              </View>
+              <View>
+                <Text style={styles.agency_txt}>{route.params.Count}</Text>
+              </View>
             </View>
-          ))}
-        </View>
-        <TouchableOpacity
-          style={styles.container_edit_button}
-          onPress={() => alert('Edit Button Pressed')}
-        >
-          <View style={styles.IconContainer}>
-            <Entypo name="edit" size={23} style={{ lineHeight: 40 }} color="rgba(0, 0, 0, 0.87)" />
-          </View>
-          <Text style={styles.edit_txt}>EDIT</Text>
-        </TouchableOpacity>
+            <View>
+              <Text style={styles.representative_txt}>{route.params.Representative_name}</Text>
+              <Text style={styles.txt_description}>The same monster also produced</Text>
+            </View>
+            <View>
+              {listOfBrands.map((v, i) => (
+                <View key={i}>
+                  <Text style={styles.brand_txt}>{v.Brand}</Text>
+                </View>
+              ))}
+            </View>
+            <TouchableOpacity
+              style={styles.container_edit_button}
+              onPress={() => alert('Edit Button Pressed')}
+            >
+              <View style={styles.IconContainer}>
+                <Entypo name="edit" size={23} style={{ lineHeight: 40 }} color="rgba(0, 0, 0, 0.87)" />
+              </View>
+              <Text style={styles.edit_txt}>EDIT</Text>
+            </TouchableOpacity>
 
-        {/* Delete Button Container */}
-        <TouchableOpacity
-          style={styles.container_button}
-          onPress={deleteRecord}
-        >
-          <View style={styles.IconContainer}>
-            <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#000000" />
+            {/* Delete Button Container */}
+            <TouchableOpacity
+              style={styles.container_button}
+              onPress={deleteRecord}
+            >
+              <View style={styles.IconContainer}>
+                <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#000000" />
+              </View>
+              <Text style={styles.delete_button_txt}>DELETE</Text>
+            </TouchableOpacity>
+            {/* Delete Button Container */}
           </View>
-          <Text style={styles.delete_button_txt}>DELETE</Text>
-        </TouchableOpacity>
-        {/* Delete Button Container */}
-      </View>
-    </ScrollView>
+        </ScrollView>
+      ) : (
+        <>
+          <Text>User Is Not Logged In</Text>
+        </>
+      )}
+    </>
   );
 }
 

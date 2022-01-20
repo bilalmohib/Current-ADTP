@@ -1,16 +1,16 @@
 // screens/UserScreen.js
-import React, { useState, useEffect, Component } from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator, View, TouchableOpacity, Text } from 'react-native';
 //Importing the icon family
-import { Entypo } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-
+import { Entypo, Ionicons } from '@expo/vector-icons';
+import React, { Component, useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 //Importing the icon family
 import firebase from '../database/firebaseDb';
+
 
 class UserScreen extends Component {
   // const [isLoading, setIsLoading] = useState(false);
   // const [userArr, setUserArr] = useState([])
+  
 
   constructor() {
     super();
