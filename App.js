@@ -22,6 +22,11 @@ function MyStack() {
         },
       }}>
       <Stack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{ title: 'Login' }}
+      />
+      <Stack.Screen
         name="UserScreen"
         component={UserScreen}
         options={{ title: 'Repeat Offenders' }}
@@ -35,11 +40,6 @@ function MyStack() {
         name="UserDetailScreen"
         component={UserDetailScreen}
         options={{ title: 'Agency Detail' }}
-      />
-       <Stack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{ title: 'Login' }}
       />
     </Stack.Navigator>
   );

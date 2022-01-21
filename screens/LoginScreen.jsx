@@ -4,6 +4,7 @@ import { StyleSheet, ScrollView, ActivityIndicator, View, TouchableOpacity, Text
 //Importing the icon family
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 //Importing the icon family
 import firebase from '../database/firebaseDb';
@@ -21,14 +22,14 @@ const LoginScreen = ({ navigation }) => {
                 setSignedInUserData(user);
                 setIsLoggedIn(true);
                 console.log("User is Logged In" + signedInUserData)
-                navigation.navigate('UserScreen')
+                // navigation.navigate('UserScreen')
                 // ...
             } else {
                 // User is signed out
                 // ...
                 setIsLoggedIn(false);
                 console.log("User is Not Logged In")
-                
+
             }
         });
     }, [])
@@ -70,12 +71,17 @@ const LoginScreen = ({ navigation }) => {
                     </ScrollView>
                 ) : (
                     <ScrollView style={styles.container}>
-                        <Text>Is Not Logged In</Text>
-                        <TouchableOpacity onPress={googleSignIn}>
-                            <Text>
-                                Login Now
-                            </Text>
-                        </TouchableOpacity>
+                        <LinearGradient
+                            // Button Linear Gradient
+                            colors={['180deg', '#8C1B16', '0%', '#FC5E36', '100%']}
+                            style={styles.button}>
+                            <Text>Is Not Logged In</Text>
+                            <TouchableOpacity onPress={googleSignIn}>
+                                <Text>
+                                    Login Now
+                                </Text>
+                            </TouchableOpacity>
+                        </LinearGradient>
                     </ScrollView>
                 )
             }
@@ -87,7 +93,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingBottom: 22,
-        backgroundColor: "#ffffff"
     },
 })
 
