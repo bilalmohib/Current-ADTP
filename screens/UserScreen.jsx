@@ -10,7 +10,7 @@ import firebase from '../database/firebaseDb';
 class UserScreen extends Component {
   // const [isLoading, setIsLoading] = useState(false);
   // const [userArr, setUserArr] = useState([])
-  
+
 
   constructor() {
     super();
@@ -37,7 +37,7 @@ class UserScreen extends Component {
         // https://firebase.google.com/docs/reference/js/firebase.User
         var uid = user.uid;
 
-        
+
 
         console.log("User is Logged In")
         // ...
@@ -111,7 +111,7 @@ class UserScreen extends Component {
 
         < View>
           <Text style={styles.headingTop}>
-            List of monster 👹
+            Businesses behaving badly
           </Text>
         </View>
 
