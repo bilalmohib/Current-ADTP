@@ -1,9 +1,10 @@
 // screens/UserScreen.js
 import React, { useState, useEffect, Component } from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, ScrollView, ActivityIndicator, View, TouchableOpacity, Text, Button } from 'react-native';
 //Importing the icon family
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 //Importing the icon family
@@ -22,7 +23,7 @@ const LoginScreen = ({ navigation }) => {
                 setSignedInUserData(user);
                 setIsLoggedIn(true);
                 console.log("User is Logged In" + signedInUserData)
-                // navigation.navigate('UserScreen')
+                navigation.navigate('UserScreen')
                 // ...
             } else {
                 // User is signed out
@@ -58,6 +59,16 @@ const LoginScreen = ({ navigation }) => {
                 var credential = error.credential;
                 // ...
             });
+    }
+
+    const logout = () => {
+        firebase.auth().signOut().then(() => {
+            // Sign-out successful.
+            alert("Logged out successfully")
+        }).catch((error) => {
+            // An error happened.
+            console.log("Error logging out ==> ", error)
+        });
 
     }
 
@@ -65,35 +76,81 @@ const LoginScreen = ({ navigation }) => {
         <>
             {
                 (isLoggedIn) ? (
-                    <ScrollView style={styles.container}>
-                        <Text>Is Logged In</Text>
+                    <LinearGradient
+                        // Button Linear Gradient
+                        style={styles.container}
+                        colors={['#8C1B16', '#FC5E36']}>
+                        <Button title='Home' onPress={() => navigation.navigate("UserScreen")} />
+                        <Text style={styles.monster}>Success</Text>
                         <Text>User name is : {signedInUserData.displayName}</Text>
-                    </ScrollView>
+                        <Text>User email is : {signedInUserData.email}</Text>
+                        <Button title='Logout' onPress={logout} />
+
+                    </LinearGradient>
                 ) : (
-                    <ScrollView style={styles.container}>
-                        <LinearGradient
-                            // Button Linear Gradient
-                            colors={['180deg', '#8C1B16', '0%', '#FC5E36', '100%']}
-                            style={styles.button}>
-                            <Text>Is Not Logged In</Text>
-                            <TouchableOpacity onPress={googleSignIn}>
-                                <Text>
-                                    Login Now
-                                </Text>
-                            </TouchableOpacity>
-                        </LinearGradient>
-                    </ScrollView>
+                    <LinearGradient
+                        style={styles.container}
+                        // Button Linear Gradient
+                        colors={['#8C1B16', '#FC5E36']}>
+                        <Text style={styles.monster}>👹</Text>
+                        <Text style={styles.txtRepeat}>Repeat Offenders</Text>
+                        <Text style={styles.mistake}>A mistake repeated more than once is a decision </Text>
+                        <TouchableOpacity style={styles.loginBTN} onPress={googleSignIn}>
+                            <AntDesign name="google" size={24} color="#D0442A" />
+                            <Text style={{ fontSize: 14, color: "#D0442A", marginLeft: 10, width: "80%", textTransform: "uppercase" }}>Sign in with google</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.terms}>By creating an account you agree to our Terms of Service and Privacy Policy.</Text>
+                    </LinearGradient>
                 )
             }
-
         </>
     );
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: 22,
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // backgroundColor: 'orange',
+        alignItems: "center",
+        justifyContent: "center",
     },
+    monster: {
+        fontSize: 32
+    },
+    txtRepeat: {
+        fontSize: 32,
+        fontWeight: "bold",
+        fontFamily: "Ariel",
+        letterSpacing: 1,
+        marginTop: 10,
+        top: 40,
+        color: "#ffffff"
+    },
+    loginBTN: {
+        width: 329,
+        height: 50,
+        backgroundColor: "#ffffff",
+        textAlign: 'center',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 25,
+        borderRadius: 4
+    },
+    terms: {
+        fontSize: 14,
+        color: "rgba(255, 255, 255, 0.87)",
+        position: "absolute",
+        bottom: 20
+    },
+    mistake: {
+        fontSize: 18,
+        lineHeight: 24,
+        textAlign: "center",
+        marginTop: 5,
+        color: "#ffffff"
+    }
 })
 
 export default LoginScreen;

@@ -24,7 +24,9 @@ function MyStack() {
       <Stack.Screen
         name="LoginScreen"
         component={LoginScreen}
-        options={{ title: 'Login' }}
+        screenOptions={{
+          headerShown: false
+        }}
       />
       <Stack.Screen
         name="UserScreen"
