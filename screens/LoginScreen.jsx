@@ -69,7 +69,6 @@ const LoginScreen = ({ navigation }) => {
             // An error happened.
             console.log("Error logging out ==> ", error)
         });
-
     }
 
     return (

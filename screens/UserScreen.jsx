@@ -14,7 +14,7 @@ class UserScreen extends Component {
 
   constructor() {
     super();
-    this.firestoreRef = firebase.firestore().collection('agencies');
+    this.firestoreRef = firebase.firestore().collection('agencies').orderBy("Count");
     this.state = {
       isLoading: true,
       userArr: []
@@ -82,6 +82,8 @@ class UserScreen extends Component {
     });
 
     console.log("User Array is equal to : ", userArr);
+    //Reversing the array
+    userArr.reverse();
     this.setState({
       userArr,
       isLoading: false,
