@@ -83,6 +83,14 @@ class UserScreen extends Component {
 
     console.log("User Array is equal to : ", userArr);
     //Reversing the array
+    ///////////////////////////Implementing the logic for getting only one Company to be displayed and displaying its appearance in count respectively ////////////////////////////////////////////
+    //First Traversing through the array
+    let i = 0;
+    while (i < userArr.length) {
+      console.log("The Company name is : ",userArr[i].Agency)
+      ++i;
+    }
+    ///////////////////////////Implementing the logic for getting only one Company to be displayed and displaying its appearance in count respectively ////////////////////////////////////////////
     userArr.reverse();
     this.setState({
       userArr,
