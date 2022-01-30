@@ -61,8 +61,12 @@ class UserScreen extends Component {
   //   }
   // })
 
+
+
+
   getCollection = (querySnapshot) => {
     const userArr = [];
+    let count = 0
     querySnapshot.forEach((res) => {
       const {
         Agency,
@@ -71,7 +75,9 @@ class UserScreen extends Component {
         Image,
         Count
       } = res.data();
+      //console.log("I is ==> ", count)
       userArr.push({
+        id: count,
         key: res.id,
         Agency,
         Brand,
@@ -79,22 +85,33 @@ class UserScreen extends Component {
         Image,
         Count
       });
+      //Incrementing the count
+      ++count;
     });
 
     console.log("User Array is equal to : ", userArr);
+
     //Reversing the array
+    userArr.reverse();
     ///////////////////////////Implementing the logic for getting only one Company to be displayed and displaying its appearance in count respectively ////////////////////////////////////////////
     //First Traversing through the array
-    let i = 0;
-    while (i < userArr.length) {
-      console.log("The Company name is : ",userArr[i].Agency)
-      ++i;
-    }
+    // let i = 0;
+    // while (i < userArr.length) {
+    //   console.log("The Company name is : ", userArr[i])
+    //   ++i;
+    // }
+    const ids = userArr.map(o => o.Agency)
+    const filtered = userArr.filter(({ Agency }, index) => {
+      return !ids.includes(Agency, index + 1)
+    });
+    console.log("Length of array after filter ==> ", filtered.length)
+    console.log("Filtered Array ==> ", filtered)
     ///////////////////////////Implementing the logic for getting only one Company to be displayed and displaying its appearance in count respectively ////////////////////////////////////////////
-    userArr.reverse();
+
+    //Finally Pushing in the state
     this.setState({
-      userArr,
-      isLoading: false,
+      userArr:filtered,
+      isLoading: false
     });
   }
   render() {
