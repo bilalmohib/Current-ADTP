@@ -1,5 +1,5 @@
-// const arr = [{ id: 1, name: 'one' }, { id: 2, name: 'two' }, { id: 1, name: 'one' }]
-//To remove duplicate objects with similar property we use the below algorithm
+//To get maximum value of an attribute from an array of objects we use the below algorithm
+
 const userArr = [
     {
         "id": 5,
@@ -61,42 +61,6 @@ userArr.reverse();
 
 console.log("Length of array before filter ==> ",userArr.length)
 
-const ids = userArr.map(o => o.Agency)
-const filtered = userArr.filter(({ Agency }, index) => {
-    // for(let i=0;i<userArr.length;i++)
-    // {
-    //     if(userArr[i])
-    // }
-    var max = userArr.reduce(function(prev, current) {
-        if (+current.Count > +prev.Count) {
-            return current;
-        } else {
-            return prev;
-        }
-    });
-    console.log("Max is equal to : ",max)
-    return !ids.includes(Agency, index + 1)
-})
-// const maxCount = filtered.reduce((acc, cur) => {
-//     if (acc < cur.Count) {
-//         acc = cur.Count;
-//     }
-//     return acc;
-// }, 0);
-
-
-// const thanksAgeny = userArr.reduce((acc, cur) => {
-//     if (!acc[cur.Agency]) {
-//         acc[cur.Agency] = cur;
-//     } else {
-//         if (acc[cur.Agency].Count < cur.Count) {
-//             acc[cur.Agency] = cur;
-//         }
-//     }
-
-//     return acc;
-// }, {})
-
-console.log("Length of array after filter ==> ",filtered.length)
-
-console.log("Filtered Array ==> ",filtered)
+//Here the algo starts
+let max = Math.max.apply(Math, userArr.map(function(o) { return o.Count; }))
+console.log("The max is equal to : ",max)

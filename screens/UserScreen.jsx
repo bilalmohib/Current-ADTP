@@ -102,7 +102,8 @@ class UserScreen extends Component {
     // }
     const ids = userArr.map(o => o.Agency)
     const filtered = userArr.filter(({ Agency }, index) => {
-      return !ids.includes(Agency, index + 1)
+            
+      // return !ids.includes(Agency, index + 1)
     });
     console.log("Length of array after filter ==> ", filtered.length)
     console.log("Filtered Array ==> ", filtered)
