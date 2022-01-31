@@ -77,13 +77,14 @@ const filtered = userArr.filter(({ Agency }, index) => {
     console.log("Max is equal to : ",max)
     return !ids.includes(Agency, index + 1)
 })
+
+//This code is written be Talha balaj.Credit goes to Talha balaj
 // const maxCount = filtered.reduce((acc, cur) => {
 //     if (acc < cur.Count) {
 //         acc = cur.Count;
 //     }
 //     return acc;
 // }, 0);
-
 
 // const thanksAgeny = userArr.reduce((acc, cur) => {
 //     if (!acc[cur.Agency]) {
@@ -96,6 +97,7 @@ const filtered = userArr.filter(({ Agency }, index) => {
 
 //     return acc;
 // }, {})
+//This code is written be Talha balaj.Credit goes to Talha balaj
 
 console.log("Length of array after filter ==> ",filtered.length)
 
