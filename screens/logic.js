@@ -59,7 +59,7 @@ const userArr = [
 
 userArr.reverse();
 
-console.log("Length of array before filter ==> ",userArr.length)
+console.log("Length of array before filter ==> ", userArr.length)
 
 const ids = userArr.map(o => o.Agency)
 const filtered = userArr.filter(({ Agency }, index) => {
@@ -67,38 +67,44 @@ const filtered = userArr.filter(({ Agency }, index) => {
     // {
     //     if(userArr[i])
     // }
-    var max = userArr.reduce(function(prev, current) {
+    var max = userArr.reduce(function (prev, current) {
         if (+current.Count > +prev.Count) {
             return current;
         } else {
             return prev;
         }
     });
-    console.log("Max is equal to : ",max)
+    console.log("Max is equal to : ", max)
     return !ids.includes(Agency, index + 1)
 })
 
 //This code is written be Talha balaj.Credit goes to Talha balaj
-// const maxCount = filtered.reduce((acc, cur) => {
-//     if (acc < cur.Count) {
-//         acc = cur.Count;
-//     }
-//     return acc;
-// }, 0);
+const maxCount = filtered.reduce((acc, cur) => {
+    if (acc < cur.Count) {
+        acc = cur.Count;
+    }
+    return acc;
+}, 0);
 
-// const thanksAgeny = userArr.reduce((acc, cur) => {
-//     if (!acc[cur.Agency]) {
-//         acc[cur.Agency] = cur;
-//     } else {
-//         if (acc[cur.Agency].Count < cur.Count) {
-//             acc[cur.Agency] = cur;
-//         }
-//     }
+const thanksAgeny = userArr.reduce((acc, cur) => {
+    if (!acc[cur.Agency]) {
+        acc[cur.Agency] = cur;
+    } else {
+        if (acc[cur.Agency].Count < cur.Count) {
+            acc[cur.Agency] = cur;
+        }
+    }
 
-//     return acc;
-// }, {})
+    return acc;
+}, {})
 //This code is written be Talha balaj.Credit goes to Talha balaj
 
-console.log("Length of array after filter ==> ",filtered.length)
+console.log("Length of array after filter ==> ", filtered.length)
 
-console.log("Filtered Array ==> ",filtered)
+//To convert objects into array of objects.Used code from this stack overflow answer https://stackoverflow.com/a/46269007/13161180
+var myData = Object.keys(thanksAgeny).map(key => {
+    return thanksAgeny[key];
+})
+console.log("Filtered Array ==> ", myData)
+//To convert objects into array of objects.Used code from this stack overflow answer https://stackoverflow.com/a/46269007/13161180
+
