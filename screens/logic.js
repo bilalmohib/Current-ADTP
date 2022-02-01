@@ -102,9 +102,9 @@ const thanksAgeny = userArr.reduce((acc, cur) => {
 console.log("Length of array after filter ==> ", filtered.length)
 
 //To convert objects into array of objects.Used code from this stack overflow answer https://stackoverflow.com/a/46269007/13161180
-var myData = Object.keys(thanksAgeny).map(key => {
+var finalAarrayofObjects = Object.keys(thanksAgeny).map(key => {
     return thanksAgeny[key];
 })
-console.log("Filtered Array ==> ", myData)
+console.log("Filtered Array ==> ", finalAarrayofObjects)
 //To convert objects into array of objects.Used code from this stack overflow answer https://stackoverflow.com/a/46269007/13161180
 

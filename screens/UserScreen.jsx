@@ -100,18 +100,41 @@ class UserScreen extends Component {
     //   console.log("The Company name is : ", userArr[i])
     //   ++i;
     // }
-    const ids = userArr.map(o => o.Agency)
-    const filtered = userArr.filter(({ Agency }, index) => {
-            
-      // return !ids.includes(Agency, index + 1)
-    });
-    console.log("Length of array after filter ==> ", filtered.length)
-    console.log("Filtered Array ==> ", filtered)
+
+    //This code is written be Talha balaj.Credit goes to Talha balaj
+    // const maxCount = filtered.reduce((acc, cur) => {
+    //   if (acc < cur.Count) {
+    //     acc = cur.Count;
+    //   }
+    //   return acc;
+    // }, 0);
+
+    const uniqueAndMaxCountObj = userArr.reduce((acc, cur) => {
+      if (!acc[cur.Agency]) {
+        acc[cur.Agency] = cur;
+      } else {
+        if (acc[cur.Agency].Count < cur.Count) {
+          acc[cur.Agency] = cur;
+        }
+      }
+
+      return acc;
+    }, {})
+    //This code is written be Talha balaj.Credit goes to Talha balaj
+
+
+
+    //To convert objects into array of objects.Used code from this stack overflow answer https://stackoverflow.com/a/46269007/13161180
+    const finalAarrayofObjects = Object.keys(uniqueAndMaxCountObj).map(key => {
+      return uniqueAndMaxCountObj[key];
+    })
+    console.log("Length of array after filter ==> ", finalAarrayofObjects.length)
+    console.log("Filtered Array ==> ", finalAarrayofObjects)
     ///////////////////////////Implementing the logic for getting only one Company to be displayed and displaying its appearance in count respectively ////////////////////////////////////////////
 
     //Finally Pushing in the state
     this.setState({
-      userArr:filtered,
+      userArr: finalAarrayofObjects,
       isLoading: false
     });
   }
