@@ -125,6 +125,8 @@ function AddUserScreen({ navigation }) {
         }
       }
     })();
+
+    checkIfLoggedIn();
   }, [])
 
   useEffect(() => {
@@ -200,6 +202,25 @@ function AddUserScreen({ navigation }) {
     ///////////////////////////////////Retrieving the data from firestore for purpose of counter///////////////////////
 
   })
+
+  const checkIfLoggedIn = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        var uid = user.uid;
+
+        console.log("User is Logged In.Welcome")
+        // ...
+      } else {
+        // User is signed out
+        // ...
+        alert("Please login first if you want to write data.")
+        console.log("User is Not Logged In.Wapis bhejo ise ye nahi likh sakta.Rule is rule.No breakage of rule is allowed here.Go back login and come back if you are logged in.Thats it.")
+        navigation.navigate('LoginScreen')
+      }
+    });
+  }
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
