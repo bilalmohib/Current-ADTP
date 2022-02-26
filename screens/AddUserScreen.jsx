@@ -116,6 +116,8 @@ function AddUserScreen({ navigation }) {
 
   const [addCount, setAddCount] = useState(false);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     (async () => {
       if (Platform.OS != "web") {
@@ -211,11 +213,13 @@ function AddUserScreen({ navigation }) {
         var uid = user.uid;
 
         console.log("User is Logged In.Welcome")
+        setIsLoggedIn(true);
         // ...
       } else {
         // User is signed out
         // ...
         alert("Please login first if you want to write data.")
+        setIsLoggedIn(false);
         console.log("User is Not Logged In.Wapis bhejo ise ye nahi likh sakta.Rule is rule.No breakage of rule is allowed here.Go back login and come back if you are logged in.Thats it.")
         navigation.navigate('LoginScreen')
       }
@@ -368,42 +372,56 @@ function AddUserScreen({ navigation }) {
   }
 
   const storeUser = () => {
-    if (pickedValue === '' || brand === '' || representative_name === '' || download_url === null) {
-      alert('Fill all the fields!');
-    } else {
-      setIsLoading(true);
-      const dbRef = firebase.firestore().collection('agencies');
-      let count = selected_brand_count + 1;
-      dbRef.add({
-        Agency: pickedValue,
-        // Agency: agency,
-        Brand: brand,
-        Representative_name: representative_name,
-        Image: download_url,
-        Count: count
-      }).then((res) => {
-        // setAgency('');
-        setVisibility(true);
-        setPickedValue('');
-        setBrand('');
-        setAgency('');
-        setPicked(1);
-        setRepresentative_name('');
-        set_selected_brand_count(0);
-        setIsLoading(false);
-        setImageUri('');
-        setDownloadUrl(null);
-        //alert("You should now navigate to the listing screen because you've added the item")
-        //props.navigation.navigate('UserScreen')
-        //navigate('UserScreen')
-        setTimeout(() => { navigation.push('UserScreen'); }, 2000);
-        setTimeout(() => { setVisibility(false); }, 4000);
-      })
-        .catch((err) => {
-          console.error("Error found: ", err);
+    ///Only write when the user is logged in 
+    if (isLoggedIn) {
+      if (pickedValue === '' || brand === '' || representative_name === '' || download_url === null) {
+        alert('Fill all the fields!');
+      } else {
+        setIsLoading(true);
+        const dbRef = firebase.firestore().collection('agencies');
+        let count = selected_brand_count + 1;
+        dbRef.add({
+          Agency: pickedValue,
+          // Agency: agency,
+          Brand: brand,
+          Representative_name: representative_name,
+          Image: download_url,
+          Count: count
+        }).then((res) => {
+          // setAgency('');
+          setVisibility(true);
+          setPickedValue('');
+          setBrand('');
+          setAgency('');
+          setPicked(1);
+          setRepresentative_name('');
+          set_selected_brand_count(0);
           setIsLoading(false);
-        });
+          setImageUri('');
+          setDownloadUrl(null);
+          //alert("You should now navigate to the listing screen because you've added the item")
+          //props.navigation.navigate('UserScreen')
+          //navigate('UserScreen')
+          setTimeout(() => { navigation.push('UserScreen'); }, 2000);
+          setTimeout(() => { setVisibility(false); }, 4000);
+        })
+          .catch((err) => {
+            console.error("Error found: ", err);
+            setIsLoading(false);
+          });
+      }
+    }///Only write when the user is logged in
+    else { // make the addition of data to the database impossible
+      if (Platform.OS != "web") {
+        Alert.alert(
+          'Please make sure you are logged in before you can write the data to the database.'
+        );
+      }
+      else {
+        alert('Please make sure you are logged in before you can write the data to the database.')
+      }
     }
+
   }
 
   const uploadImage = async () => {

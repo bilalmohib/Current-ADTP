@@ -11,13 +11,13 @@ class UserScreen extends Component {
   // const [isLoading, setIsLoading] = useState(false);
   // const [userArr, setUserArr] = useState([])
 
-
   constructor() {
     super();
     this.firestoreRef = firebase.firestore().collection('agencies').orderBy("Count");
     this.state = {
       isLoading: true,
-      userArr: []
+      userArr: [],
+      isLoggedIn: false
     };
   }
 
@@ -38,29 +38,21 @@ class UserScreen extends Component {
         var uid = user.uid;
 
         console.log("User is Logged In")
+        this.setState({
+          isLoggedIn: true
+        })
         // ...
       } else {
         // User is signed out
         // ...
-        console.log("User is Not Logged In.Lekin koi baat nahi login kiye beghair data ko dekh sakta hai haan write nahi kar sakto so no fikr.")
+        this.setState({
+          isLoggedIn: false
+        })
+        console.log("User is Not Logged In.")
         //this.props.navigation.navigate('LoginScreen')
       }
     });
   }
-
-  // useEffect(() => {
-  //   firebase.firestore().collection('agencies').onSnapshot(getCollection);
-  //   if (isLoading) {
-  //     return (
-  //       <View style={styles.preloader}>
-  //         <ActivityIndicator size="large" color="#9E9E9E" />
-  //       </View>
-  //     )
-  //   }
-  // })
-
-
-
 
   getCollection = (querySnapshot) => {
     const userArr = [];
@@ -99,7 +91,7 @@ class UserScreen extends Component {
     //   ++i;
     // }
 
-    //This code is written be Talha balaj.Credit goes to Talha balaj
+    //This code is written be https://github.com/talhabalaj
     // const maxCount = filtered.reduce((acc, cur) => {
     //   if (acc < cur.Count) {
     //     acc = cur.Count;
@@ -118,7 +110,7 @@ class UserScreen extends Component {
 
       return acc;
     }, {})
-    //This code is written be Talha balaj.Credit goes to Talha balaj
+    //This code is written be https://github.com/talhabalaj.
 
 
 
