@@ -41,7 +41,6 @@ function UserDetailScreen({ route, navigation }) {
         // ...
         setIsLoggedIn(false);
         console.log("User is Not Logged In")
-        this.props.navigation.navigate('LoginScreen')
       }
     });
   }, [])
@@ -131,36 +130,49 @@ function UserDetailScreen({ route, navigation }) {
   // }
 
   const deleteRecord = () => {
-    if (Platform.OS != "web") {
-      Alert.alert(
-        'Delete User',
-        'Are you sure?',
-        [
-          { text: 'Yes', onPress: () => alert("Delete button pressed") },
-          { text: 'No', onPress: () => console.log('No item was removed'), style: 'cancel' },
-        ],
-        {
-          cancelable: true
+    if (isLoggedIn) {
+      if (Platform.OS != "web") {
+        Alert.alert(
+          'Delete User',
+          'Are you sure?',
+          [
+            { text: 'Yes', onPress: () => alert("Delete button pressed") },
+            { text: 'No', onPress: () => console.log('No item was removed'), style: 'cancel' },
+          ],
+          {
+            cancelable: true
+          }
+        );
+      }
+      else {
+        let return_value = confirm("Are you want to delete?");
+        if (return_value) {
+          //alert("Ok I will delete")
+          const dbRef = firebase.firestore().collection('agencies').doc(route.params.userkey)
+          dbRef.delete().then((res) => {
+            console.log('Item removed from database')
+            navigation.push('UserScreen');
+            // setTimeout(() => {  }, 2000);
+          })
         }
-      );
-    }
-    else {
-      let return_value = confirm("Are you want to delete?");
-      if (return_value) {
-        //alert("Ok I will delete")
-        const dbRef = firebase.firestore().collection('agencies').doc(route.params.userkey)
-        dbRef.delete().then((res) => {
-          console.log('Item removed from database')
-          navigation.push('UserScreen');
-          // setTimeout(() => {  }, 2000);
-        })
       }
     }
+    else {
+      if (Platform.OS != "web") {
+        Alert.alert(
+          'Please make sure you are logged in before you can delete the item.'
+        );
+      }
+      else{
+        alert('Please make sure you are logged in before you can delete the item.')
+      }
+    }
+
   }
 
   return (
     <>
-      {(isLoggedIn) ? (
+      {(true) ? (
         <ScrollView>
           <Image
             style={styles.tinyLogo}
