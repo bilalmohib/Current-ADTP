@@ -163,12 +163,74 @@ function UserDetailScreen({ route, navigation }) {
           'Please make sure you are logged in before you can delete the item.'
         );
       }
-      else{
+      else {
         alert('Please make sure you are logged in before you can delete the item.')
       }
     }
-
   }
+
+  const onShare = async () => {
+    const uri = 'https://images.pexels.com/photos/618833/pexels-photo-618833.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
+
+    Share.share(
+      {
+        title: 'test title',
+        url: uri,
+      },
+      {
+        excludedActivityTypes: [
+          // 'com.apple.UIKit.activity.PostToWeibo',
+          // 'com.apple.UIKit.activity.Print',
+          // 'com.apple.UIKit.activity.CopyToPasteboard',
+          // 'com.apple.UIKit.activity.AssignToContact',
+          // 'com.apple.UIKit.activity.SaveToCameraRoll',
+          // 'com.apple.UIKit.activity.AddToReadingList',
+          // 'com.apple.UIKit.activity.PostToFlickr',
+          // 'com.apple.UIKit.activity.PostToVimeo',
+          // 'com.apple.UIKit.activity.PostToTencentWeibo',
+          // 'com.apple.UIKit.activity.AirDrop',
+          // 'com.apple.UIKit.activity.OpenInIBooks',
+          // 'com.apple.UIKit.activity.MarkupAsPDF',
+          // 'com.apple.reminders.RemindersEditorExtension',
+          // 'com.apple.mobilenotes.SharingExtension',
+          // 'com.apple.mobileslideshow.StreamShareService',
+          // 'com.linkedin.LinkedIn.ShareExtension',
+          // 'pinterest.ShareExtension',
+          // 'com.google.GooglePlus.ShareExtension',
+          // 'com.tumblr.tumblr.Share-With-Tumblr',
+          // 'net.whatsapp.WhatsApp.ShareExtension', //WhatsApp
+        ],
+      }
+    );
+  };
+
+  const onLinkToInstagramIOS = async () => {
+    const uri = 'https://images.pexels.com/photos/618833/pexels-photo-618833.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
+    const encodedURL = encodeURIComponent(uri);
+    const instagramURL = `instagram://library?AssetPath=${encodedURL}`;
+    return Linking.openURL(instagramURL);
+  };
+
+  const onSubToYoutube = async () => {
+    const instagramURL = `https://www.youtube.com/c/exposition?sub_confirmation=1`;
+    return Linking.openURL(instagramURL);
+  };
+
+  const onOpenApp = async () => {
+    /* A good list for iOS: https://ios.gadgethacks.com/news/always-updated-list-ios-app-url-scheme-names-0184033/ */
+
+    const settings = 'app-settings://';
+    const notes = 'mobilenotes://';
+    const clashOfClans = 'clashofclans://';
+
+    const snapchat = Platform.select({
+      ios: 'snapchat://add/baconbrix',
+      default: 'https://snapchat.com/add/baconbrix',
+    });
+
+    return Linking.openURL(snapchat);
+  };
+
 
   return (
     <>
@@ -219,6 +281,18 @@ function UserDetailScreen({ route, navigation }) {
               <Text style={styles.delete_button_txt}>DELETE</Text>
             </TouchableOpacity>
             {/* Delete Button Container */}
+
+            {/* Share Button Container */}
+            <TouchableOpacity
+              style={styles.container_button}
+              onPress={onOpenApp}
+            >
+              <View style={styles.IconContainer}>
+                <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#000000" />
+              </View>
+              <Text style={styles.delete_button_txt}>SHARE</Text>
+            </TouchableOpacity>
+            {/* Share Button Container */}
           </View>
         </ScrollView>
       ) : (

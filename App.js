@@ -49,7 +49,7 @@ function MyStack() {
       <Stack.Screen
         name="Header"
         component={Header}
-        options={{ header:null }}
+        options={{ header: null }}
       />
     </Stack.Navigator>
   );
