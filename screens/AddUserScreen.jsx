@@ -118,6 +118,9 @@ function AddUserScreen({ navigation }) {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  //The user data after signing in
+  const [signedInUserData, setSignedInUserData] = useState([])
+
   useEffect(() => {
     (async () => {
       if (Platform.OS != "web") {
@@ -186,6 +189,7 @@ function AddUserScreen({ navigation }) {
         snapshot.forEach(element => {
           data.push(Object.assign({
             id: element.id,
+            "uid":element.uid,
             "Agency": element.Agency,
             "Brand": element.Brand,
             "Representative_name": element.Representative_name,
@@ -212,14 +216,16 @@ function AddUserScreen({ navigation }) {
         // https://firebase.google.com/docs/reference/js/firebase.User
         var uid = user.uid;
 
-        console.log("User is Logged In.Welcome")
+        console.log("User is Logged In.Welcome",user.uid)
         setIsLoggedIn(true);
+        setSignedInUserData(user);
         // ...
       } else {
         // User is signed out
         // ...
         alert("Please login first if you want to write data.")
         setIsLoggedIn(false);
+        setSignedInUserData(null);
         console.log("User is Not Logged In.Wapis bhejo ise ye nahi likh sakta.Rule is rule.No breakage of rule is allowed here.Go back login and come back if you are logged in.Thats it.")
         navigation.navigate('LoginScreen')
       }
@@ -380,7 +386,9 @@ function AddUserScreen({ navigation }) {
         setIsLoading(true);
         const dbRef = firebase.firestore().collection('agencies');
         let count = selected_brand_count + 1;
+        console.log("When submitting the data uid is equal to :",signedInUserData.uid)
         dbRef.add({
+          uid:signedInUserData.uid,
           Agency: pickedValue,
           // Agency: agency,
           Brand: brand,

@@ -63,10 +63,12 @@ class UserScreen extends Component {
         Brand,
         Representative_name,
         Image,
-        Count
+        Count,
+        uid
       } = res.data();
       //console.log("I is ==> ", count)
       userArr.push({
+        uid:uid,
         id: count,
         key: res.id,
         Agency,
@@ -167,7 +169,8 @@ class UserScreen extends Component {
                     Representative_name: item.Representative_name,
                     Brand: item.Brand,
                     Image: item.Image,
-                    Count: item.Count
+                    Count: item.Count,
+                    uid:item.uid
                   });
                 }}
                 key={i}

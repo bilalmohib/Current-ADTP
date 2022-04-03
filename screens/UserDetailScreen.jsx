@@ -84,6 +84,7 @@ function UserDetailScreen({ route, navigation }) {
         snapshot.forEach(element => {
           data.push(Object.assign({
             id: element.id,
+            "uid":element.uid,
             "Agency": element.Agency,
             "Brand": element.Brand,
             "Representative_name": element.Representative_name,
@@ -146,14 +147,20 @@ function UserDetailScreen({ route, navigation }) {
       }
       else {
         let return_value = confirm("Are you want to delete?");
-        if (return_value) {
+        console.log("Firestore UID ==> ",route.params.uid);
+        console.log("Signed In User data UID ==> ",signedInUserData.uid);
+        //Only users can delete there own posts 
+        if (return_value==true && route.params.uid == signedInUserData.uid) {
           //alert("Ok I will delete")
           const dbRef = firebase.firestore().collection('agencies').doc(route.params.userkey)
           dbRef.delete().then((res) => {
-            console.log('Item removed from database')
+            alert('Item removed from database')
             navigation.push('UserScreen');
             // setTimeout(() => {  }, 2000);
           })
+        }
+        else{
+          alert("You can only delete your own posts.");
         }
       }
     }
