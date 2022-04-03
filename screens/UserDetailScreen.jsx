@@ -8,6 +8,9 @@ import { AntDesign } from '@expo/vector-icons';
 //Importing Device API to check the device type to render different content for android and ios
 // import * as Device from 'expo-device';
 //Importing Device API to check the device type to render different content for android and ios
+
+import onShare from './components/OnShare';
+
 import firebase from '../database/firebaseDb';
 
 function UserDetailScreen({ route, navigation }) {
@@ -178,40 +181,40 @@ function UserDetailScreen({ route, navigation }) {
     }
   }
 
-  const onShare = async () => {
-    const uri = 'https://images.pexels.com/photos/618833/pexels-photo-618833.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
+  // const onShare = async () => {
+  //   const uri = 'https://images.pexels.com/photos/618833/pexels-photo-618833.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
 
-    Share.share(
-      {
-        title: 'test title',
-        url: uri,
-      },
-      {
-        excludedActivityTypes: [
-          // 'com.apple.UIKit.activity.PostToWeibo',
-          // 'com.apple.UIKit.activity.Print',
-          // 'com.apple.UIKit.activity.CopyToPasteboard',
-          // 'com.apple.UIKit.activity.AssignToContact',
-          // 'com.apple.UIKit.activity.SaveToCameraRoll',
-          // 'com.apple.UIKit.activity.AddToReadingList',
-          // 'com.apple.UIKit.activity.PostToFlickr',
-          // 'com.apple.UIKit.activity.PostToVimeo',
-          // 'com.apple.UIKit.activity.PostToTencentWeibo',
-          // 'com.apple.UIKit.activity.AirDrop',
-          // 'com.apple.UIKit.activity.OpenInIBooks',
-          // 'com.apple.UIKit.activity.MarkupAsPDF',
-          // 'com.apple.reminders.RemindersEditorExtension',
-          // 'com.apple.mobilenotes.SharingExtension',
-          // 'com.apple.mobileslideshow.StreamShareService',
-          // 'com.linkedin.LinkedIn.ShareExtension',
-          // 'pinterest.ShareExtension',
-          // 'com.google.GooglePlus.ShareExtension',
-          // 'com.tumblr.tumblr.Share-With-Tumblr',
-          // 'net.whatsapp.WhatsApp.ShareExtension', //WhatsApp
-        ],
-      }
-    );
-  };
+  //   Share.share(
+  //     {
+  //       title: 'test title',
+  //       url: uri,
+  //     },
+  //     {
+  //       excludedActivityTypes: [
+  //         // 'com.apple.UIKit.activity.PostToWeibo',
+  //         // 'com.apple.UIKit.activity.Print',
+  //         // 'com.apple.UIKit.activity.CopyToPasteboard',
+  //         // 'com.apple.UIKit.activity.AssignToContact',
+  //         // 'com.apple.UIKit.activity.SaveToCameraRoll',
+  //         // 'com.apple.UIKit.activity.AddToReadingList',
+  //         // 'com.apple.UIKit.activity.PostToFlickr',
+  //         // 'com.apple.UIKit.activity.PostToVimeo',
+  //         // 'com.apple.UIKit.activity.PostToTencentWeibo',
+  //         // 'com.apple.UIKit.activity.AirDrop',
+  //         // 'com.apple.UIKit.activity.OpenInIBooks',
+  //         // 'com.apple.UIKit.activity.MarkupAsPDF',
+  //         // 'com.apple.reminders.RemindersEditorExtension',
+  //         // 'com.apple.mobilenotes.SharingExtension',
+  //         // 'com.apple.mobileslideshow.StreamShareService',
+  //         // 'com.linkedin.LinkedIn.ShareExtension',
+  //         // 'pinterest.ShareExtension',
+  //         // 'com.google.GooglePlus.ShareExtension',
+  //         // 'com.tumblr.tumblr.Share-With-Tumblr',
+  //         // 'net.whatsapp.WhatsApp.ShareExtension', //WhatsApp
+  //       ],
+  //     }
+  //   );
+  // };
 
   const onLinkToInstagramIOS = async () => {
     const uri = 'https://images.pexels.com/photos/618833/pexels-photo-618833.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
@@ -240,6 +243,12 @@ function UserDetailScreen({ route, navigation }) {
     return Linking.openURL(snapchat);
   };
 
+  const shareIt = () => {
+    const url = "https://muslims.islamicfinder.org/p-111843/";
+ 
+    onShare("My App","Hey Chekout this amazing post",url);   
+
+  }
 
   return (
     <>
