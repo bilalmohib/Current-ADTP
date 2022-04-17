@@ -11,6 +11,8 @@ import { AntDesign } from '@expo/vector-icons';
 
 import firebase from '../database/firebaseDb';
 
+import ShareService from "./services/ShareService";
+
 function UserDetailScreen({ route, navigation }) {
   const [loading, setLoading] = useState(false);
 
@@ -154,6 +156,13 @@ function UserDetailScreen({ route, navigation }) {
     }
   }
 
+  const onShare = () => {
+    // alert("adsfjasdlk;f")
+    const url = "https://muslims.islamicfinder.org/p-111843";
+
+    ShareService.onShare('My App', 'Checkout this post', url);
+  }
+
   return (
     <>
       {(true) ? (
@@ -205,15 +214,15 @@ function UserDetailScreen({ route, navigation }) {
             {/* Delete Button Container */}
 
             {/* Share Button Container */}
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={styles.container_button}
-              onPress={onOpenApp}
+              onPress={onShare}
             >
               <View style={styles.IconContainer}>
                 <AntDesign name="delete" size={23} style={{ lineHeight: 40 }} color="#000000" />
               </View>
               <Text style={styles.delete_button_txt}>SHARE</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             {/* Share Button Container */}
           </View>
         </ScrollView>

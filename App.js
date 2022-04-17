@@ -25,11 +25,11 @@ function MyStack() {
           fontWeight: 'bold',
         },
       }}>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="ShareScreen"
         component={ShareScreen}
         options={{ title: "Share Screen", headerRight: () => <Header /> }}
-      />
+      /> */}
       <Stack.Screen
         name="UserScreen"
         component={UserScreen}
