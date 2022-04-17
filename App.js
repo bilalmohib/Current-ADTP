@@ -6,6 +6,7 @@ import AddUserScreen from './screens/AddUserScreen';
 import UserScreen from './screens/UserScreen';
 import UserDetailScreen from './screens/UserDetailScreen';
 import LoginScreen from './screens/LoginScreen';
+import ShareScreen from './screens/ShareScreen';
 //Importing the header
 import Header from './screens/components/Header';
 
@@ -24,6 +25,11 @@ function MyStack() {
           fontWeight: 'bold',
         },
       }}>
+      <Stack.Screen
+        name="ShareScreen"
+        component={ShareScreen}
+        options={{ title: "Share Screen", headerRight: () => <Header /> }}
+      />
       <Stack.Screen
         name="UserScreen"
         component={UserScreen}

@@ -1,15 +1,25 @@
-import { Share } from "react-native";
+import {
+    StyleSheet,
+    ScrollView,
+    ActivityIndicator,
+    View,
+    TouchableOpacity,
+    Text,
+    Button,
+    Platform,
+    Share
+} from 'react-native';
 
 const onShare = async (title, message, url) => {
     const messageAndUrl = message.concat('\n\n').concat(url);
     try {
-        const result = await Share(
+        const result = await Share.share(
             {
                 title,
-                message: messageAndUrl,
+                message: messageAndUrl
             },
             {
-                subject: title,
+                subject: title
             },
         )
         if (result.action === Share.sharedAction) {
@@ -23,8 +33,8 @@ const onShare = async (title, message, url) => {
             //Runs only for ios if share is cancelled
         }
     } catch (error) {
-        //console.log('Error while Sharing, error')
+        //console.log("Error while Sharing , error")
     }
 }
 
-export default onShare;
+export default { onShare }
